@@ -1,0 +1,863 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+    --bg-deep-navy: #0B1021;
+    --card-navy: rgba(21, 29, 56, 0.72);
+    --card-border: rgba(184, 169, 248, 0.16);
+    --lavender: #B8A9F8;
+    --lavender-strong: #9F8DF7;
+    --muted-blue: #7AA2F7;
+    --soft-sage: #86EFAC;
+    --warm-star: #FDE68A;
+    --text-primary: #F1F5F9;
+    --text-secondary: #A5B4CF;
+}
+
+body {
+    background-color: var(--bg-deep-navy);
+    color: var(--text-primary);
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =========================================
+   1. الخلفية الفضائية الهادئة (Soothing Sky)
+   ========================================= */
+.ambient-sky {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background: linear-gradient(160deg, #090D1C 0%, #111833 50%, #0D1326 100%);
+}
+
+.nebula-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(95px);
+    opacity: 0.35;
+}
+
+.nebula-1 {
+    width: 520px;
+    height: 520px;
+    background: #3B3678;
+    top: -120px;
+    left: -80px;
+}
+
+.nebula-2 {
+    width: 480px;
+    height: 480px;
+    background: #1E3A6E;
+    bottom: -100px;
+    right: -60px;
+}
+
+#calm-stars-canvas {
+    position: absolute;
+    inset: 0;
+}
+
+/* =========================================
+   2. الهيدر العلوي (Header)
+   ========================================= */
+.wellness-header {
+    position: sticky;
+    top: 0;
+    z-index: 25;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 40px;
+    background: rgba(11, 16, 33, 0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(184, 169, 248, 0.14);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.cabin-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(184, 169, 248, 0.1);
+    border: 1px solid rgba(184, 169, 248, 0.3);
+    color: var(--lavender);
+    padding: 8px 15px;
+    border-radius: 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.cabin-back-btn svg {
+    width: 17px;
+    height: 17px;
+}
+
+.cabin-back-btn:hover {
+    background: var(--lavender);
+    color: #0B1021;
+}
+
+.greeting-tag {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--lavender);
+    margin-bottom: 2px;
+}
+
+.welcome-title h1 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mission-day-pill, .team-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+.mission-day-pill {
+    background: rgba(122, 162, 247, 0.12);
+    border: 1px solid rgba(122, 162, 247, 0.28);
+    color: var(--muted-blue);
+}
+
+.mission-day-pill svg {
+    width: 15px;
+    height: 15px;
+}
+
+.team-pill {
+    background: rgba(184, 169, 248, 0.12);
+    border: 1px solid rgba(184, 169, 248, 0.28);
+    color: var(--lavender);
+}
+
+.soft-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--soft-sage);
+    box-shadow: 0 0 8px var(--soft-sage);
+}
+
+/* =========================================
+   3. الحاوية الرئيسية
+   ========================================= */
+.wellness-container {
+    position: relative;
+    z-index: 10;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 28px 40px 54px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+/* =========================================
+   4. قسم الرسالة اليومية من الأرض (Daily Happy Message)
+   ========================================= */
+.earth-message-banner {
+    background: linear-gradient(135deg, rgba(28, 38, 74, 0.85) 0%, rgba(20, 27, 54, 0.9) 100%);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(184, 169, 248, 0.32);
+    border-radius: 26px;
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    box-shadow: 0 18px 42px rgba(5, 8, 20, 0.55);
+}
+
+.earth-illustration {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mini-earth-svg {
+    width: 84px;
+    height: 84px;
+    animation: gentleFloat 5s ease-in-out infinite;
+    filter: drop-shadow(0 0 18px rgba(122, 162, 247, 0.45));
+}
+
+@keyframes gentleFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(4deg); }
+}
+
+.glowing-star {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--warm-star);
+    box-shadow: 0 0 10px var(--warm-star);
+    animation: twinkleStar 2.8s ease-in-out infinite;
+}
+
+.star-a { width: 5px; height: 5px; top: 8px; right: 10px; }
+.star-b { width: 4px; height: 4px; bottom: 14px; left: 8px; animation-delay: 1.2s; }
+
+@keyframes twinkleStar {
+    0%, 100% { opacity: 0.35; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.25); }
+}
+
+.earth-message-content {
+    flex: 1;
+}
+
+.message-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.earth-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    color: var(--warm-star);
+}
+
+.earth-badge svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--warm-star);
+}
+
+.new-note-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(184, 169, 248, 0.25);
+    color: var(--text-secondary);
+    padding: 5px 12px;
+    border-radius: 10px;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.new-note-btn svg {
+    width: 13px;
+    height: 13px;
+}
+
+.new-note-btn:hover {
+    border-color: var(--lavender);
+    color: #FFFFFF;
+}
+
+.happy-quote {
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    line-height: 1.4;
+    transition: opacity 0.3s ease;
+}
+
+/* =========================================
+   5. شبكة القسم الأوسط (Journal + Sleep)
+   ========================================= */
+.wellness-two-col {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 26px;
+    align-items: stretch;
+}
+
+.glass-card {
+    background: var(--card-navy);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--card-border);
+    border-radius: 26px;
+    padding: 26px 28px;
+    box-shadow: 0 18px 40px rgba(4, 7, 18, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.section-eyebrow {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    color: var(--muted-blue);
+    margin-bottom: 4px;
+}
+
+.card-head h2 {
+    font-size: 1.32rem;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.head-icon.lavender {
+    width: 24px;
+    height: 24px;
+    color: var(--lavender);
+}
+
+/* =========================================
+   6. المفكرة الشخصية (Personal Journal)
+   ========================================= */
+.journal-editor {
+    background: rgba(11, 16, 33, 0.65);
+    border: 1px solid rgba(184, 169, 248, 0.18);
+    border-radius: 18px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.journal-editor input,
+.journal-editor textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #F8FAFC;
+    outline: none;
+    resize: none;
+}
+
+.journal-editor input {
+    font-size: 0.98rem;
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.journal-editor textarea {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #E2E8F0;
+}
+
+.journal-editor input::placeholder,
+.journal-editor textarea::placeholder {
+    color: #6E7E9E;
+}
+
+.editor-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.privacy-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+}
+
+.privacy-hint svg {
+    width: 13px;
+    height: 13px;
+}
+
+.editor-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-lavender {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--lavender);
+    color: #0B1021;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-lavender svg {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-lavender:hover {
+    background: #C9BEFF;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(184, 169, 248, 0.35);
+}
+
+.btn-ghost {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: var(--text-secondary);
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.journal-history {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-header h3 {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.history-header span {
+    font-size: 0.75rem;
+    color: var(--lavender);
+    font-weight: 600;
+}
+
+.entries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 240px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.entry-item {
+    background: rgba(11, 16, 33, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 14px 16px;
+    transition: border-color 0.25s ease;
+}
+
+.entry-item:hover {
+    border-color: rgba(184, 169, 248, 0.35);
+}
+
+.entry-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.entry-date {
+    font-size: 0.72rem;
+    color: var(--muted-blue);
+    font-weight: 600;
+}
+
+.entry-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 6px;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.icon-action-btn svg {
+    width: 15px;
+    height: 15px;
+}
+
+.icon-action-btn:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.icon-action-btn.delete:hover {
+    color: #FDA4AF;
+}
+
+.entry-item h4 {
+    font-size: 0.94rem;
+    color: #FFFFFF;
+    margin-bottom: 4px;
+}
+
+.entry-item p {
+    font-size: 0.85rem;
+    color: #CBD5E1;
+    line-height: 1.5;
+    white-space: pre-line;
+}
+
+.empty-journal-box {
+    text-align: center;
+    padding: 26px 16px;
+    border-radius: 14px;
+    border: 1px dashed rgba(184, 169, 248, 0.25);
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+}
+
+/* =========================================
+   7. مراقبة النوم (Sleep Monitoring)
+   ========================================= */
+.sleep-avg-pill {
+    background: rgba(122, 162, 247, 0.14);
+    border: 1px solid rgba(122, 162, 247, 0.35);
+    border-radius: 14px;
+    padding: 8px 14px;
+    text-align: right;
+}
+
+.sleep-avg-pill span {
+    display: block;
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    color: var(--text-secondary);
+}
+
+.sleep-avg-pill strong {
+    font-size: 1.15rem;
+    color: #FFFFFF;
+}
+
+.sleep-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.view-tabs {
+    display: flex;
+    background: rgba(11, 16, 33, 0.7);
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    background: rgba(184, 169, 248, 0.2);
+    color: #FFFFFF;
+}
+
+.sleep-legend {
+    display: flex;
+    gap: 14px;
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dot-recorded {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--lavender);
+}
+
+.dot-missing {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    border: 1.5px dashed var(--text-secondary);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.sleep-chart-box {
+    position: relative;
+    height: 235px;
+    width: 100%;
+}
+
+.sleep-empty-state {
+    text-align: center;
+    padding: 45px 20px;
+    border-radius: 16px;
+    border: 1px dashed rgba(122, 162, 247, 0.3);
+    color: var(--text-secondary);
+}
+
+.sleep-empty-state svg {
+    width: 30px;
+    height: 30px;
+    color: var(--lavender);
+    margin-bottom: 8px;
+}
+
+.sleep-log-bar {
+    display: flex;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.sleep-log-bar select,
+.sleep-log-bar input {
+    background: rgba(11, 16, 33, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    padding: 8px 10px;
+    color: #FFFFFF;
+    font-size: 0.82rem;
+    outline: none;
+}
+
+.sleep-log-bar input {
+    flex: 1;
+}
+
+.btn-soft-blue {
+    background: rgba(122, 162, 247, 0.22);
+    border: 1px solid rgba(122, 162, 247, 0.45);
+    color: #FFFFFF;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-soft-blue:hover {
+    background: var(--muted-blue);
+    color: #0B1021;
+}
+
+/* =========================================
+   8. تمارين الاسترخاء (Relaxation Exercises Cards)
+   ========================================= */
+.exercises-section {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.section-title-row h2 {
+    font-size: 1.4rem;
+    color: #FFFFFF;
+}
+
+.section-title-row p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.exercises-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.exercise-card {
+    background: var(--card-navy);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+    box-shadow: 0 14px 32px rgba(4, 7, 18, 0.45);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.exercise-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--lavender);
+    box-shadow: 0 20px 42px rgba(184, 169, 248, 0.18);
+}
+
+.ex-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ex-icon-box {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: rgba(184, 169, 248, 0.14);
+    color: var(--lavender);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ex-icon-box svg {
+    width: 22px;
+    height: 22px;
+}
+
+.ex-duration {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--muted-blue);
+    background: rgba(122, 162, 247, 0.12);
+    padding: 4px 10px;
+    border-radius: 10px;
+}
+
+.exercise-card h3 {
+    font-size: 1.12rem;
+    color: #FFFFFF;
+    margin-bottom: 6px;
+}
+
+.exercise-card p {
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.ex-start-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--lavender);
+}
+
+.ex-start-link svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.25s ease;
+}
+
+.exercise-card:hover .ex-start-link svg {
+    transform: translateX(4px);
+}
+
+/* =========================================
+   9. التجاوب مع التابلت والموبايل
+   ========================================= */
+@media (max-width: 1080px) {
+    .wellness-two-col {
+        grid-template-columns: 1fr;
+    }
+    .exercises-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 680px) {
+    .wellness-header {
+        padding: 14px 20px;
+    }
+    .wellness-container {
+        padding: 20px;
+    }
+    .earth-message-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+    .exercises-grid {
+        grid-template-columns: 1fr;
+    }
+}

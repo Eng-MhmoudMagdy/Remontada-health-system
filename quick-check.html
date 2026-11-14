@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroHealth | Quick Vision & Mobility Check</title>
+    <link rel="stylesheet" href="quick-check.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- خلفية نجوم هادئة -->
+    <canvas id="qc-bg-stars"></canvas>
+
+    <!-- الشريط العلوي -->
+    <header class="qc-topbar">
+        <div class="topbar-left">
+            <a href="dashboard.html" class="back-dash-btn" title="Return to Command Dashboard">
+                <i data-lucide="arrow-left"></i>
+                <span>Dashboard</span>
+            </a>
+            <div>
+                <span class="eyebrow">OPTICAL & MOTOR RAPID SCAN</span>
+                <h1>Quick Crew Check</h1>
+            </div>
+        </div>
+
+        <div class="scan-status-pill" id="topbar-status-pill">
+            <span class="status-dot"></span>
+            <span id="topbar-status-text">CAMERA STANDBY</span>
+        </div>
+    </header>
+
+    <!-- الحاوية الرئيسية -->
+    <main class="qc-workspace">
+
+        <!-- =========================================================
+             المرحلة 1: شاشة الفحص المباشر بالكاميرا (Active Camera Scan)
+             ========================================================= -->
+        <section class="scan-grid-layout" id="scan-stage">
+
+            <!-- العمود الأيسر: إطار الكاميرا التفاعلي -->
+            <div class="camera-panel">
+                <div class="camera-frame">
+                    <video id="crew-webcam" autoplay playsinline muted></video>
+                    <canvas id="vision-overlay-canvas"></canvas>
+
+                    <!-- شريط التعليمات العلوي داخل الكاميرا -->
+                    <div class="camera-hud-top">
+                        <span class="step-pill" id="hud-step-pill">READY</span>
+                        <h2 id="hud-instruction-text">Open camera to begin 15-second crew check</h2>
+                    </div>
+
+                    <!-- مؤشر التثبيت السريع لإتمام الخطوة -->
+                    <div class="hold-progress-box hidden" id="hold-progress-box">
+                        <div class="hold-label-row">
+                            <span id="hold-status-label">Hold steady...</span>
+                            <span id="hold-percent-text">0%</span>
+                        </div>
+                        <div class="hold-track">
+                            <div class="hold-fill" id="hold-fill-bar"></div>
+                        </div>
+                    </div>
+
+                    <!-- شاشة البداية قبل تشغيل الكاميرا -->
+                    <div class="camera-standby-cover" id="camera-standby-cover">
+                        <div class="standby-icon">
+                            <i data-lucide="camera"></i>
+                        </div>
+                        <h3>Rapid Eye & Limb Check</h3>
+                        <p>Scans eye closure percentage, under-eye dark circles, and 4 quick limb movements in seconds.</p>
+                        <div class="standby-actions">
+                            <button type="button" class="btn-primary" id="start-camera-btn">
+                                <i data-lucide="camera"></i>
+                                <span>Start Camera Scan</span>
+                            </button>
+                            <button type="button" class="btn-secondary" id="start-demo-btn">
+                                <i data-lucide="sparkles"></i>
+                                <span>Quick Demo Mode</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- العمود الأيمن: قائمة الخطوات الخمس والقراءات الفورية -->
+            <aside class="steps-sidebar">
+                <div class="sidebar-header">
+                    <span class="eyebrow">SCAN SEQUENCE (5 STEPS)</span>
+                    <h3>Check Progress</h3>
+                </div>
+
+                <!-- قراءات العين المباشرة -->
+                <div class="live-eye-metrics">
+                    <div class="eye-mini-box">
+                        <span>Eye Closure</span>
+                        <strong id="live-closure-val">--%</strong>
+                    </div>
+                    <div class="eye-mini-box">
+                        <span>Under-Eye Circles</span>
+                        <strong id="live-circles-val">Pending</strong>
+                    </div>
+                </div>
+
+                <!-- قائمة الخطوات الخمس -->
+                <ul class="check-steps-list" id="check-steps-list">
+                    <li class="step-item active" data-step="0">
+                        <span class="step-num">1</span>
+                        <div class="step-info">
+                            <strong>Eye & Dark Circles Scan</strong>
+                            <span>Look straight at camera</span>
+                        </div>
+                        <i data-lucide="eye" class="step-state-icon"></i>
+                    </li>
+                    <li class="step-item" data-step="1">
+                        <span class="step-num">2</span>
+                        <div class="step-info">
+                            <strong>Raise Right Hand</strong>
+                            <span>Lift right arm above shoulder</span>
+                        </div>
+                        <i data-lucide="hand" class="step-state-icon"></i>
+                    </li>
+                    <li class="step-item" data-step="2">
+                        <span class="step-num">3</span>
+                        <div class="step-info">
+                            <strong>Raise Left Hand</strong>
+                            <span>Lift left arm above shoulder</span>
+                        </div>
+                        <i data-lucide="hand" class="step-state-icon"></i>
+                    </li>
+                    <li class="step-item" data-step="3">
+                        <span class="step-num">4</span>
+                        <div class="step-info">
+                            <strong>Raise Right Leg</strong>
+                            <span>Lift right knee slightly</span>
+                        </div>
+                        <i data-lucide="footprints" class="step-state-icon"></i>
+                    </li>
+                    <li class="step-item" data-step="4">
+                        <span class="step-num">5</span>
+                        <div class="step-info">
+                            <strong>Raise Left Leg</strong>
+                            <span>Lift left knee slightly</span>
+                        </div>
+                        <i data-lucide="footprints" class="step-state-icon"></i>
+                    </li>
+                </ul>
+
+                <!-- زر تأكيد يدوي سريع في حال عدم ظهور كامل الجسم في الكاميرا -->
+                <div class="sidebar-footer-controls hidden" id="active-scan-controls">
+                    <button type="button" class="btn-confirm-step" id="manual-confirm-btn">
+                        <i data-lucide="check-circle-2"></i>
+                        <span>Confirm Current Step</span>
+                    </button>
+                </div>
+            </aside>
+
+        </section>
+
+        <!-- =========================================================
+             المرحلة 2: التقرير النهائي المبسط (Simple 3-Card Summary)
+             ========================================================= -->
+        <section class="report-stage hidden" id="report-stage">
+            <div class="report-header">
+                <div>
+                    <span class="eyebrow">SCAN COMPLETE • CREW READINESS SUMMARY</span>
+                    <h2>Quick Check Report</h2>
+                </div>
+                <span class="readiness-badge optimal" id="overall-readiness-badge">ALL CHECKS CLEAR</span>
+            </div>
+
+            <!-- 3 بطاقات واضحة وبسيطة -->
+            <div class="report-cards-grid">
+
+                <!-- البطاقة 1: فحص العين والهالات -->
+                <article class="summary-card">
+                    <div class="card-icon-badge cyan">
+                        <i data-lucide="eye"></i>
+                    </div>
+                    <h3>Eye & Fatigue Scan</h3>
+                    <div class="stat-pair">
+                        <div>
+                            <span>Eye Closure</span>
+                            <strong id="rep-closure-pct">12%</strong>
+                        </div>
+                        <div>
+                            <span>Dark Circles</span>
+                            <strong id="rep-dark-circles">None Detected</strong>
+                        </div>
+                    </div>
+                    <p id="rep-eye-note">Eyelids are alert and under-eye tone appears well-rested.</p>
+                </article>
+
+                <!-- البطاقة 2: فحص حركة الأطراف الأربعة -->
+                <article class="summary-card">
+                    <div class="card-icon-badge sky">
+                        <i data-lucide="activity"></i>
+                    </div>
+                    <h3>Limb Mobility (4/4)</h3>
+                    <div class="limbs-status-grid" id="rep-limbs-grid">
+                        <span class="limb-chip ok">✓ Right Hand</span>
+                        <span class="limb-chip ok">✓ Left Hand</span>
+                        <span class="limb-chip ok">✓ Right Leg</span>
+                        <span class="limb-chip ok">✓ Left Leg</span>
+                    </div>
+                    <p id="rep-limb-note">Full motor response confirmed across upper and lower limbs.</p>
+                </article>
+
+                <!-- البطاقة 3: التوصية السريعة -->
+                <article class="summary-card">
+                    <div class="card-icon-badge emerald" id="rep-status-icon-box">
+                        <i data-lucide="shield-check"></i>
+                    </div>
+                    <h3>Crew Readiness</h3>
+                    <div class="final-verdict-pill" id="rep-verdict-pill">Fit for Orbital Duties</div>
+                    <p id="rep-advice-text">Visual alertness and motor coordination look steady. Maintain normal hydration.</p>
+                </article>
+
+            </div>
+
+            <!-- أزرار المتابعة -->
+            <div class="report-actions">
+                <button type="button" class="btn-secondary" id="retake-scan-btn">
+                    <i data-lucide="rotate-ccw"></i>
+                    <span>Run Check Again</span>
+                </button>
+                <a href="sensors.html" class="btn-primary">
+                    <i data-lucide="activity"></i>
+                    <span>View Vitals Sensors</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Canvas مخفي لتحليل لون المنطقة تحت العين -->
+    <canvas id="offscreen-sample-canvas" class="hidden"></canvas>
+
+    <script type="module" src="quick-check-app.js"></script>
+</body>
+</html>

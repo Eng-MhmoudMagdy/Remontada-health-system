@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroHealth | Crew Command Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- مكتبة الأيقونات -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- مكتبة Three.js لرسم كوكب الأرض الواقعي 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.r128/three.min.js"></script>
+    <!-- مكتبة GSAP لتحميل الكروت بسلاسة وسرعة -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+
+    <!-- خلفية فضائية هادئة -->
+    <canvas id="space-bg-canvas"></canvas>
+
+    <!-- الهيدر العلوي المختصر والاحترافي -->
+    <header class="dash-header">
+        <div class="brand">
+            <div class="brand-mark">
+                <i data-lucide="orbit"></i>
+            </div>
+            <div>
+                <h1>AstroHealth</h1>
+                <span>CREW TELEMETRY & WELLNESS</span>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <!-- الساعة المدارية -->
+            <div class="utc-clock" title="Mission Coordinated Universal Time">
+                <span class="live-dot"></span>
+                <span id="mission-utc-clock">UTC 00:00:00</span>
+            </div>
+
+            <!-- أيقونة Roadmap -->
+            <button class="roadmap-icon-btn" id="roadmap-nav-btn" data-route="roadmap.html" title="Open Mission Roadmap">
+                <i data-lucide="map"></i>
+                <span>Roadmap</span>
+            </button>
+
+            <!-- بيانات رائد الفضاء -->
+            <div class="astronaut-chip">
+                <span class="astro-initials">CA</span>
+                <span class="astro-name">Cmdr. Alex</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- مساحة العمل الرئيسية -->
+    <main class="workspace-grid">
+
+        <!-- =========================================================
+             الجزء الأيسر: كارد البُعد عن الأرض العائم (3D Realistic Earth)
+             ========================================================= -->
+        <aside class="earth-floating-dock">
+            <div class="earth-card anim-item">
+                <div class="earth-card-top">
+                    <div>
+                        <span class="telemetry-eyebrow">EARTH SEPARATION</span>
+                        <h2>Distance From Earth</h2>
+                    </div>
+                    <span class="interact-badge" title="Drag to rotate globe">
+                        <i data-lucide="rotate-3d"></i>
+                    </span>
+                </div>
+
+                <!-- مجسم الكرة الأرضية الواقعية -->
+                <div class="earth-canvas-wrap" id="earth-3d-container"></div>
+
+                <!-- القراءة الأساسية للمسافة -->
+                <div class="primary-distance">
+                    <strong id="earth-distance-km">384,412</strong>
+                    <span>km</span>
+                </div>
+
+                <!-- أهم مؤشرين فقط لرائد الفضاء -->
+                <div class="essential-telemetry">
+                    <div class="tele-cell">
+                        <span>SIGNAL DELAY</span>
+                        <strong id="signal-latency">1.28 s</strong>
+                    </div>
+                    <div class="tele-cell">
+                        <span>VELOCITY</span>
+                        <strong>7.66 km/s</strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- =========================================================
+             الجزء الأيمن: الكروت الأربعة الأساسية فقط بدون أي ازدحام
+             ========================================================= -->
+        <section class="cards-section">
+            <div class="cards-grid">
+
+                <!-- 1. كارد Sensors Dashboard -->
+                <article class="nav-card cyan anim-item" data-route="sensors.html">
+                    <div class="card-header">
+                        <div class="icon-box cyan">
+                            <i data-lucide="activity"></i>
+                        </div>
+                        <span class="arrow-circle"><i data-lucide="arrow-up-right"></i></span>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>Sensors Dashboard</h3>
+                        <p>Live biometric vitals, heart rate, blood oxygen, and suit sensor streams.</p>
+                    </div>
+
+                    <div class="card-footer">
+                        <span class="status-dot cyan"></span>
+                        <span>Telemetry Online</span>
+                    </div>
+                </article>
+
+                <!-- 2. كارد Mental Health -->
+                <article class="nav-card lavender anim-item" data-route="mental.html">
+                    <div class="card-header">
+                        <div class="icon-box lavender">
+                            <i data-lucide="heart-handshake"></i>
+                        </div>
+                        <span class="arrow-circle"><i data-lucide="arrow-up-right"></i></span>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>Mental Health</h3>
+                        <p>Personal space journal, sleep overview, guided breathing, and Earth notes.</p>
+                    </div>
+
+                    <div class="card-footer">
+                        <span class="status-dot lavender"></span>
+                        <span id="mh-live-note">Wellness Space Ready</span>
+                    </div>
+                </article>
+
+                <!-- 3. كارد Quick Check -->
+                <article class="nav-card sky anim-item" data-route="quick-check.html">
+                    <div class="card-header">
+                        <div class="icon-box sky">
+                            <i data-lucide="scan-face"></i>
+                        </div>
+                        <span class="arrow-circle"><i data-lucide="arrow-up-right"></i></span>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>Quick Check</h3>
+                        <p>Optical camera scan for eyelid closure percentage and under-eye fatigue.</p>
+                    </div>
+
+                    <div class="card-footer">
+                        <span class="status-dot sky"></span>
+                        <span>Optical Scanner Ready</span>
+                    </div>
+                </article>
+
+                <!-- 4. كارد Virtual Clinic -->
+                <article class="nav-card emerald anim-item" data-route="clinic.html">
+                    <div class="card-header">
+                        <div class="icon-box emerald">
+                            <i data-lucide="stethoscope"></i>
+                        </div>
+                        <span class="arrow-circle"><i data-lucide="arrow-up-right"></i></span>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>Virtual Clinic</h3>
+                        <p>Flight surgeon consultation, medical guidance, and crew health records.</p>
+                    </div>
+
+                    <div class="card-footer">
+                        <span class="status-dot emerald"></span>
+                        <span>Medical Link Active</span>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroHealth | Guided Relaxation Session</title>
+    <link rel="stylesheet" href="exercise.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <div class="ambient-sky">
+        <div class="nebula-glow nebula-1"></div>
+        <div class="nebula-glow nebula-2"></div>
+    </div>
+
+    <header class="exercise-header">
+        <button class="back-wellness-btn" id="back-to-mental">
+            <i data-lucide="arrow-left"></i>
+            <span>Back to Mental Wellness</span>
+        </button>
+        <span class="session-badge" id="exercise-category-badge">GUIDED SESSION</span>
+    </header>
+
+    <main class="exercise-stage">
+        <div class="session-card">
+
+            <!-- رأس التمرين: العنوان والمدة والوصف -->
+            <div class="session-intro">
+                <div class="duration-pill">
+                    <i data-lucide="clock"></i>
+                    <span id="exercise-duration-label">3 Minutes</span>
+                </div>
+                <h1 id="exercise-title">Guided Breathing</h1>
+                <p id="exercise-description">Calm your nervous system with slow, rhythmic orbital breathing.</p>
+            </div>
+
+            <!-- المؤشر البصري التفاعلي (Visual Breathing / Focus Orb + Progress) -->
+            <div class="visual-focus-area">
+                <div class="breathing-orb-wrapper" id="breathing-orb-wrapper">
+                    <div class="orb-halo"></div>
+                    <div class="orb-core" id="orb-core">
+                        <span class="orb-cue" id="orb-cue">READY</span>
+                        <strong class="orb-timer" id="timer-display">03:00</strong>
+                    </div>
+                </div>
+
+                <!-- شريط التقدم البسيط -->
+                <div class="progress-wrapper">
+                    <div class="progress-meta">
+                        <span id="session-status-text">Press Start when you are comfortable</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- التعليمات خطوة بخطوة -->
+            <div class="steps-container">
+                <h3>Step-by-Step Guidance</h3>
+                <ol class="steps-list" id="exercise-steps-list">
+                    <!-- يتم تعبئتها ديناميكياً -->
+                </ol>
+            </div>
+
+            <!-- أزرار التحكم: Start / Pause / Resume / Finish -->
+            <div class="controls-bar" id="controls-bar">
+                <button class="ctrl-btn primary" id="start-btn">
+                    <i data-lucide="play"></i>
+                    <span>Start</span>
+                </button>
+
+                <button class="ctrl-btn secondary hidden" id="pause-btn">
+                    <i data-lucide="pause"></i>
+                    <span>Pause</span>
+                </button>
+
+                <button class="ctrl-btn primary hidden" id="resume-btn">
+                    <i data-lucide="play"></i>
+                    <span>Resume</span>
+                </button>
+
+                <button class="ctrl-btn finish hidden" id="finish-btn">
+                    <i data-lucide="check-circle"></i>
+                    <span>Finish</span>
+                </button>
+            </div>
+
+            <!-- رسالة إتمام التمرين -->
+            <div class="completion-card hidden" id="completion-card">
+                <i data-lucide="sparkles"></i>
+                <h3>Session Complete</h3>
+                <p>Take a gentle moment before returning to your mission duties. You did great.</p>
+                <div class="completion-actions">
+                    <button class="ctrl-btn secondary" id="restart-session-btn">Repeat Session</button>
+                    <button class="ctrl-btn primary" id="done-return-btn">Return to Wellness Space</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="mental-data.js"></script>
+    <script src="exercise-app.js"></script>
+</body>
+</html>

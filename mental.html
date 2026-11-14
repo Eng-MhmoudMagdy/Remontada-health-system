@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroHealth | Mental Wellness Sanctuary</title>
+    <link rel="stylesheet" href="mental.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- خلفية فضائية هادئة -->
+    <div class="ambient-sky">
+        <div class="nebula-glow nebula-1"></div>
+        <div class="nebula-glow nebula-2"></div>
+        <canvas id="calm-stars-canvas"></canvas>
+    </div>
+
+    <!-- الهيدر العلوي البسيط -->
+    <header class="wellness-header">
+        <div class="header-left">
+            <button class="cabin-back-btn" id="back-to-cabin" title="Return to Main Dashboard">
+                <i data-lucide="arrow-left"></i>
+                <span>Cabin</span>
+            </button>
+            <div class="welcome-title">
+                <span class="greeting-tag">PERSONAL SANCTUARY // CREW WELLNESS</span>
+                <h1>Welcome back, Cmdr. Alex</h1>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="mission-day-pill">
+                <i data-lucide="sparkles"></i>
+                <span>ORBITAL SOL 142</span>
+            </div>
+            <div class="team-pill">
+                <span class="soft-dot"></span>
+                <span>TEAM REMONTADA</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="wellness-container">
+
+        <!-- 1. قسم الرسالة اليومية السعيدة من الأرض (Daily Happy Message) -->
+        <section class="earth-message-banner" id="earth-message-banner">
+            <div class="earth-illustration">
+                <div class="glowing-star star-a"></div>
+                <div class="glowing-star star-b"></div>
+                <svg viewBox="0 0 100 100" class="mini-earth-svg" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="earthGlowGrad" cx="35%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#93C5FD"/>
+                            <stop offset="55%" stop-color="#3B82F6"/>
+                            <stop offset="100%" stop-color="#1E3A8A"/>
+                        </radialGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="38" fill="url(#earthGlowGrad)"/>
+                    <!-- قارات مبسطة بألوان ناعمة -->
+                    <path d="M32 34 C40 28, 52 32, 50 42 C48 48, 38 48, 34 42 Z" fill="#86EFAC" opacity="0.85"/>
+                    <path d="M56 46 C66 44, 74 52, 68 62 C62 68, 54 62, 54 54 Z" fill="#86EFAC" opacity="0.85"/>
+                    <path d="M36 56 C44 55, 48 64, 42 70 C36 72, 32 64, 36 56 Z" fill="#86EFAC" opacity="0.8"/>
+                    <!-- هالة الغلاف الجوي -->
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(184, 169, 248, 0.45)" stroke-width="2"/>
+                </svg>
+            </div>
+
+            <div class="earth-message-content">
+                <div class="message-meta">
+                    <span class="earth-badge"><i data-lucide="heart"></i> A LITTLE MESSAGE FROM EARTH</span>
+                    <button class="new-note-btn" id="refresh-message-btn" title="Read another note from Earth">
+                        <i data-lucide="refresh-cw"></i>
+                        <span>Another Note</span>
+                    </button>
+                </div>
+                <blockquote class="happy-quote" id="happy-message-text">
+                    "Looking up at the sky and waving at you!"
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- الشبكة المتوازنة: المفكرة الشخصية + مراقبة النوم -->
+        <div class="wellness-two-col">
+
+            <!-- 2. المفكرة الشخصية (Personal Journal — "Your Space, Your Thoughts") -->
+            <section class="glass-card journal-section">
+                <div class="card-head">
+                    <div>
+                        <span class="section-eyebrow">PRIVATE DIGITAL NOTEBOOK</span>
+                        <h2>Your Space, Your Thoughts</h2>
+                    </div>
+                    <i data-lucide="book-open" class="head-icon lavender"></i>
+                </div>
+
+                <div class="journal-editor">
+                    <input type="text" id="journal-title-input" placeholder="Enter title" maxlength="80">
+                    <textarea id="journal-body-input" rows="5" placeholder="Write freely... thoughts, feelings, daily reflections, or a quiet note to yourself."></textarea>
+
+                    <div class="editor-actions">
+                        <span class="privacy-hint"><i data-lucide="lock"></i> Saved locally in your cabin</span>
+                        <div class="editor-btns">
+                            <button class="btn-ghost hidden" id="cancel-edit-btn">Cancel</button>
+                            <button class="btn-lavender" id="save-journal-btn">
+                                <i data-lucide="check"></i>
+                                <span id="save-btn-label">Save Entry</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="journal-history">
+                    <div class="history-header">
+                        <h3>Previous Reflections</h3>
+                        <span id="entries-count">0 Entries</span>
+                    </div>
+                    <div class="entries-list" id="journal-entries-list">
+                        <!-- يتم توليد التدوينات السابقة أو حالة الفراغ ديناميكياً -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. مراقبة النوم (Sleep Monitoring — "Your Sleep Overview") -->
+            <section class="glass-card sleep-section">
+                <div class="card-head">
+                    <div>
+                        <span class="section-eyebrow">CIRCADIAN REST TRACKER</span>
+                        <h2>Your Sleep Overview</h2>
+                    </div>
+                    <div class="sleep-avg-pill">
+                        <span>AVG SLEEP</span>
+                        <strong id="avg-sleep-value">7.2 hrs</strong>
+                    </div>
+                </div>
+
+                <!-- أزرار التبديل بين العرض الأسبوعي واليومي + تسجيل سريع -->
+                <div class="sleep-toolbar">
+                    <div class="view-tabs">
+                        <button class="tab-btn active" data-view="weekly">Weekly Overview</button>
+                        <button class="tab-btn" data-view="daily">Daily Breakdown</button>
+                    </div>
+
+                    <div class="sleep-legend">
+                        <span class="legend-item"><i class="dot-recorded"></i> Recorded</span>
+                        <span class="legend-item"><i class="dot-missing"></i> Missing Data</span>
+                    </div>
+                </div>
+
+                <!-- الرسم البياني للنوم -->
+                <div class="sleep-chart-box" id="sleep-chart-box">
+                    <canvas id="sleepChart"></canvas>
+                </div>
+
+                <!-- حالة الفراغ إذا لم توجد أي سجلات نوم -->
+                <div class="sleep-empty-state hidden" id="sleep-empty-state">
+                    <i data-lucide="moon"></i>
+                    <p>No sleep records logged yet. Add a daily rest entry below to visualize your sleep pattern.</p>
+                </div>
+
+                <!-- أداة تحديث/إضافة ساعات النوم لأي يوم لتجربة البيانات الديناميكية -->
+                <div class="sleep-log-bar">
+                    <select id="sleep-day-select" aria-label="Select Day">
+                        <option value="0">Mon</option>
+                        <option value="1">Tue</option>
+                        <option value="2">Wed</option>
+                        <option value="3">Thu</option>
+                        <option value="4">Fri</option>
+                        <option value="5">Sat</option>
+                        <option value="6">Sun</option>
+                    </select>
+                    <input type="number" id="sleep-hours-input" min="0" max="14" step="0.5" placeholder="Hours (e.g. 7.5)">
+                    <button class="btn-soft-blue" id="log-sleep-btn">Update Day</button>
+                    <button class="btn-ghost" id="mark-missing-btn" title="Clear day to test missing data">Clear</button>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- 4. تمارين الاسترخاء (Relaxation Exercises — "Take a Moment for Yourself") -->
+        <section class="exercises-section">
+            <div class="section-title-row">
+                <div>
+                    <span class="section-eyebrow">GUIDED MENTAL RESTORATION</span>
+                    <h2>Take a Moment for Yourself</h2>
+                </div>
+                <p>Select a short guided session to pause, breathe, and reset.</p>
+            </div>
+
+            <div class="exercises-grid" id="exercises-grid">
+                <!-- يتم توليد الكروت الأربعة ديناميكياً من mental-data.js -->
+            </div>
+        </section>
+
+    </main>
+
+    <script src="mental-data.js"></script>
+    <script src="mental-app.js"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroHealth | Daily Astronaut Mission Roadmap</title>
+    <link rel="stylesheet" href="roadmap.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- خلفية نجوم هادئة -->
+    <canvas id="roadmap-stars-canvas"></canvas>
+
+    <!-- الشريط العلوي -->
+    <header class="rm-topbar">
+        <div class="topbar-left">
+            <a href="dashboard.html" class="back-dash-btn" title="Return to Command Dashboard">
+                <i data-lucide="arrow-left"></i>
+                <span>Dashboard</span>
+            </a>
+            <div>
+                <span class="eyebrow">ORBITAL DAILY ROUTINE</span>
+                <h1>Daily Mission Roadmap</h1>
+            </div>
+        </div>
+
+        <div class="topbar-right">
+            <div class="progress-badge" id="daily-progress-badge">
+                <i data-lucide="check-circle-2"></i>
+                <span id="completed-summary-text">0 / 5 Daily Tasks Done</span>
+            </div>
+            <button type="button" class="reset-day-btn" id="reset-day-btn" title="Reset daily tasks for a new day">
+                <i data-lucide="rotate-ccw"></i>
+                <span>Reset Day</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- الحاوية الرئيسية -->
+    <main class="rm-workspace">
+
+        <!-- شريط التحكم في رحلة Nastro والمهمة النشطة -->
+        <section class="mission-control-bar">
+            <div class="current-mission-info">
+                <div class="mission-pill-group">
+                    <span class="checkpoint-pill" id="hud-step-badge">TASK 01 / 05</span>
+                    <span class="time-pill" id="hud-time-badge">07:30 UTC • MORNING</span>
+                </div>
+                <h2 id="hud-mission-title">Morning Hydration & Vitals</h2>
+                <p id="hud-mission-desc">Drink 500 ml of water and check your morning heart rate and oxygen saturation.</p>
+            </div>
+
+            <div class="mission-nav-buttons">
+                <button type="button" class="nav-ctrl-btn" id="prev-mission-btn" disabled>
+                    <i data-lucide="chevron-left"></i>
+                    <span>Previous</span>
+                </button>
+
+                <button type="button" class="nav-ctrl-btn primary" id="next-mission-btn">
+                    <span>Next Task</span>
+                    <i data-lucide="chevron-right"></i>
+                </button>
+
+                <button type="button" class="nav-ctrl-btn tour" id="auto-tour-btn">
+                    <i data-lucide="play" id="auto-tour-icon"></i>
+                    <span id="auto-tour-label">Auto Tour</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- مسرح الطريق المتعرج التفاعلي (Winding Road Infographic) -->
+        <section class="road-viewport" id="road-viewport">
+            <div class="road-canvas-stage" id="road-stage">
+
+                <!-- رسم الطريق المتعرج والخطوط المتقطعة ونقاط التثبيت -->
+                <svg id="roadmap-svg" viewBox="0 0 1200 540" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                        <filter id="roadNeonGlow" x="-10%" y="-20%" width="120%" height="140%">
+                            <feGaussianBlur stdDeviation="5" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- 1. الحافة المضيئة الخارجية للطريق -->
+                    <path id="road-glow-border"
+                          d="M 55 272 C 110 306, 150 306, 195 294 C 275 272, 335 224, 415 224 C 495 224, 555 304, 635 304 C 715 304, 775 224, 855 224 C 935 224, 995 294, 1075 294 C 1110 294, 1135 280, 1155 268"
+                          fill="none" stroke="rgba(56, 189, 248, 0.32)" stroke-width="48" stroke-linecap="round" filter="url(#roadNeonGlow)"/>
+
+                    <!-- 2. جسم الطريق الأسفلتي الداكن (Trim Path Animation) -->
+                    <path id="road-asphalt-core"
+                          d="M 55 272 C 110 306, 150 306, 195 294 C 275 272, 335 224, 415 224 C 495 224, 555 304, 635 304 C 715 304, 775 224, 855 224 C 935 224, 995 294, 1075 294 C 1110 294, 1135 280, 1155 268"
+                          fill="none" stroke="#080D1A" stroke-width="40" stroke-linecap="round"/>
+
+                    <!-- 3. الخط المتقطع في منتصف الطريق -->
+                    <path id="road-dashed-line"
+                          d="M 55 272 C 110 306, 150 306, 195 294 C 275 272, 335 224, 415 224 C 495 224, 555 304, 635 304 C 715 304, 775 224, 855 224 C 935 224, 995 294, 1075 294 C 1110 294, 1135 280, 1155 268"
+                          fill="none" stroke="rgba(248, 250, 252, 0.82)" stroke-width="2.6" stroke-dasharray="11 11" stroke-linecap="round"/>
+
+                    <!-- طبقة الدوائر الملونة على الطريق والخطوط العمودية المنقطة -->
+                    <g id="svg-connectors-group"></g>
+                </svg>
+
+                <!-- طبقة الدبابيس الدائرية وبطاقات المهام اليومية الخمس -->
+                <div class="checkpoints-layer" id="checkpoints-layer"></div>
+
+                <!-- رائد الفضاء اللطيف 'Nastro' -->
+                <div class="nastro-mascot" id="nastro-mascot" aria-label="Nastro Astronaut Mascot">
+                    <div class="nastro-sprite" id="nastro-sprite">
+                        <span class="nastro-label">NASTRO</span>
+                        <svg viewBox="0 0 80 96" width="60" height="72">
+                            <!-- حقيبة الدفع الخلفية -->
+                            <rect x="17" y="42" width="46" height="31" rx="10" fill="#334155" stroke="#94A3B8" stroke-width="2"/>
+                            <!-- لهب نفاث هادئ -->
+                            <ellipse cx="31" cy="87" rx="5" ry="7" fill="#00F0FF" opacity="0.8"/>
+                            <ellipse cx="49" cy="87" rx="5" ry="7" fill="#00F0FF" opacity="0.8"/>
+                            <!-- الساقان -->
+                            <rect x="25" y="68" width="12" height="16" rx="6" fill="#E2E8F0" stroke="#475569" stroke-width="1.8"/>
+                            <rect x="43" y="68" width="12" height="16" rx="6" fill="#E2E8F0" stroke="#475569" stroke-width="1.8"/>
+                            <!-- الجذع الأبيض -->
+                            <rect x="21" y="44" width="38" height="30" rx="13" fill="#FFFFFF" stroke="#475569" stroke-width="2"/>
+                            <!-- وحدة الصدر -->
+                            <rect x="31" y="51" width="18" height="12" rx="3" fill="#0F172A" stroke="#38BDF8" stroke-width="1.3"/>
+                            <circle cx="36" cy="57" r="2" fill="#10B981"/>
+                            <circle cx="44" cy="57" r="2" fill="#00F0FF"/>
+                            <!-- الذراعان -->
+                            <rect x="11" y="47" width="11" height="20" rx="5.5" transform="rotate(14 16 52)" fill="#F1F5F9" stroke="#475569" stroke-width="1.8"/>
+                            <rect x="58" y="44" width="11" height="20" rx="5.5" transform="rotate(-24 63 52)" fill="#F1F5F9" stroke="#475569" stroke-width="1.8"/>
+                            <!-- الخوذة -->
+                            <circle cx="40" cy="26" r="22" fill="#FFFFFF" stroke="#475569" stroke-width="2.2"/>
+                            <rect x="24" y="15" width="32" height="21" rx="10.5" fill="#082F49" stroke="#38BDF8" stroke-width="2"/>
+                            <!-- ملامح الوجه -->
+                            <circle cx="34" cy="25" r="2.6" fill="#00F0FF"/>
+                            <circle cx="46" cy="25" r="2.6" fill="#00F0FF"/>
+                            <path d="M37 29 Q40 32 43 29" stroke="#00F0FF" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+                            <path d="M28 19 Q36 16 44 19" stroke="#FFFFFF" stroke-opacity="0.72" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script src="roadmap-data.js"></script>
+    <script src="roadmap-app.js"></script>
+</body>
+</html>

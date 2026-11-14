@@ -1,0 +1,484 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+    --bg-deep: #060A16;
+    --surface: rgba(14, 21, 42, 0.76);
+    --surface-hover: rgba(19, 29, 56, 0.9);
+    --border-subtle: rgba(148, 163, 184, 0.14);
+    --cyan: #00F0FF;
+    --lavender: #B8A9F8;
+    --sky: #38BDF8;
+    --emerald: #10B981;
+    --text-primary: #F8FAFC;
+    --text-muted: #94A3B8;
+}
+
+body {
+    background-color: var(--bg-deep);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+#space-bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* =========================================
+   1. الهيدر العلوي (Clean Minimal Header)
+   ========================================= */
+.dash-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 40px;
+    background: rgba(6, 10, 22, 0.84);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.brand-mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: var(--sky);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.brand-mark svg {
+    width: 21px;
+    height: 21px;
+}
+
+.brand h1 {
+    font-size: 1.18rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.brand span {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    color: var(--text-muted);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.utc-clock {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-variant-numeric: tabular-nums;
+}
+
+.live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--emerald);
+    box-shadow: 0 0 8px var(--emerald);
+}
+
+/* زر/أيقونة Roadmap */
+.roadmap-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.38);
+    color: var(--sky);
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.roadmap-icon-btn svg {
+    width: 17px;
+    height: 17px;
+}
+
+.roadmap-icon-btn:hover {
+    background: var(--sky);
+    color: #060A16;
+    transform: translateY(-1px);
+}
+
+.astronaut-chip {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 5px 13px 5px 6px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+}
+
+.astro-initials {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #2563EB, #7C3AED);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.astro-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+/* =========================================
+   2. تخطيط الصفحة (يسار: كارد الأرض العائم | يمين: 4 كروت)
+   ========================================= */
+.workspace-grid {
+    position: relative;
+    z-index: 10;
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 36px 40px 48px;
+    display: grid;
+    grid-template-columns: 370px 1fr;
+    gap: 32px;
+    align-items: center;
+    min-height: calc(100vh - 76px);
+}
+
+/* =========================================
+   3. الكارد العائم في الجزء الأيسر (Distance From Earth)
+   ========================================= */
+.earth-floating-dock {
+    position: sticky;
+    top: 104px;
+}
+
+.earth-card {
+    background: linear-gradient(165deg, rgba(16, 26, 54, 0.86) 0%, rgba(9, 14, 30, 0.94) 100%);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    border-radius: 28px;
+    padding: 24px;
+    box-shadow:
+        0 28px 65px rgba(0, 0, 0, 0.75),
+        0 0 40px rgba(56, 189, 248, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    animation: gentleFloat 6s ease-in-out infinite;
+}
+
+@keyframes gentleFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-7px); }
+}
+
+.earth-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.telemetry-eyebrow {
+    display: block;
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    color: var(--sky);
+    margin-bottom: 3px;
+}
+
+.earth-card-top h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.interact-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--sky);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.interact-badge svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* حاوية الكرة الأرضية ثلاثية الأبعاد */
+.earth-canvas-wrap {
+    width: 100%;
+    height: 265px;
+    border-radius: 22px;
+    background: radial-gradient(circle at center, rgba(15, 36, 78, 0.45) 0%, rgba(4, 7, 18, 0.92) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    overflow: hidden;
+    cursor: grab;
+}
+
+.earth-canvas-wrap:active {
+    cursor: grabbing;
+}
+
+/* قراءة المسافة الكبيرة */
+.primary-distance {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(5, 9, 20, 0.72);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.primary-distance strong {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.primary-distance span {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--sky);
+}
+
+/* أهم مؤشرين فقط */
+.essential-telemetry {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.tele-cell {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 11px 14px;
+    text-align: center;
+}
+
+.tele-cell span {
+    display: block;
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+}
+
+.tele-cell strong {
+    font-size: 0.92rem;
+    color: #F1F5F9;
+    font-variant-numeric: tabular-nums;
+}
+
+/* =========================================
+   4. شبكة الكروت الأربعة الأساسية (2x2 Clean Grid)
+   ========================================= */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.nav-card {
+    background: var(--surface);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 26px;
+    padding: 28px;
+    min-height: 245px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 22px;
+    cursor: pointer;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.28s ease,
+                border-color 0.28s ease,
+                box-shadow 0.28s ease;
+}
+
+.nav-card:hover {
+    transform: translateY(-6px);
+    background: var(--surface-hover);
+}
+
+.nav-card.cyan:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 24px 52px rgba(0, 240, 255, 0.16);
+}
+
+.nav-card.lavender:hover {
+    border-color: var(--lavender);
+    box-shadow: 0 24px 52px rgba(184, 169, 248, 0.18);
+}
+
+.nav-card.sky:hover {
+    border-color: var(--sky);
+    box-shadow: 0 24px 52px rgba(56, 189, 248, 0.18);
+}
+
+.nav-card.emerald:hover {
+    border-color: var(--emerald);
+    box-shadow: 0 24px 52px rgba(16, 185, 129, 0.18);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-box svg {
+    width: 25px;
+    height: 25px;
+}
+
+.icon-box.cyan { background: rgba(0, 240, 255, 0.13); color: var(--cyan); }
+.icon-box.lavender { background: rgba(184, 169, 248, 0.15); color: var(--lavender); }
+.icon-box.sky { background: rgba(56, 189, 248, 0.15); color: var(--sky); }
+.icon-box.emerald { background: rgba(16, 185, 129, 0.15); color: var(--emerald); }
+
+.arrow-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-muted);
+    transition: all 0.25s ease;
+}
+
+.arrow-circle svg {
+    width: 17px;
+    height: 17px;
+}
+
+.nav-card:hover .arrow-circle {
+    background: rgba(255, 255, 255, 0.14);
+    color: #FFFFFF;
+    transform: translate(2px, -2px);
+}
+
+.card-content h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 8px;
+}
+
+.card-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #CBD5E1;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.cyan { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+.status-dot.lavender { background: var(--lavender); box-shadow: 0 0 8px var(--lavender); }
+.status-dot.sky { background: var(--sky); box-shadow: 0 0 8px var(--sky); }
+.status-dot.emerald { background: var(--emerald); box-shadow: 0 0 8px var(--emerald); }
+
+/* =========================================
+   5. التجاوب مع الشاشات المختلفة
+   ========================================= */
+@media (max-width: 1080px) {
+    .workspace-grid {
+        grid-template-columns: 1fr;
+        padding: 24px;
+    }
+    .earth-floating-dock {
+        position: static;
+    }
+}
+
+@media (max-width: 680px) {
+    .dash-header {
+        padding: 14px 20px;
+    }
+    .utc-clock, .astro-name {
+        display: none;
+    }
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+}

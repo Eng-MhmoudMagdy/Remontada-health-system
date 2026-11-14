@@ -1,0 +1,507 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+    --bg-space: #060A16;
+    --panel-bg: rgba(14, 22, 44, 0.84);
+    --panel-border: rgba(148, 163, 184, 0.16);
+    --cyan: #00F0FF;
+    --sky: #38BDF8;
+    --emerald: #10B981;
+    --amber: #F59E0B;
+    --pink: #F472B6;
+    --lavender: #B8A9F8;
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+}
+
+body {
+    background: radial-gradient(circle at 20% 12%, #0E1B3D 0%, #060A16 70%);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+#roadmap-stars-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* =========================================
+   1. الهيدر العلوي
+   ========================================= */
+.rm-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 15px 40px;
+    background: rgba(6, 10, 22, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--panel-border);
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.back-dash-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: var(--sky);
+    padding: 9px 15px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.25s ease;
+}
+
+.back-dash-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.back-dash-btn:hover {
+    background: var(--sky);
+    color: #060A16;
+}
+
+.eyebrow {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--amber);
+    margin-bottom: 2px;
+}
+
+.rm-topbar h1 {
+    font-size: 1.24rem;
+    font-weight: 700;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.progress-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.36);
+    color: var(--emerald);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.progress-badge svg {
+    width: 16px;
+    height: 16px;
+}
+
+.reset-day-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #CBD5E1;
+    padding: 8px 13px;
+    border-radius: 11px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reset-day-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.reset-day-btn:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+}
+
+/* =========================================
+   2. الحاوية الرئيسية وشريط التحكم
+   ========================================= */
+.rm-workspace {
+    position: relative;
+    z-index: 10;
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 24px 40px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.mission-control-bar {
+    background: var(--panel-bg);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--panel-border);
+    border-radius: 22px;
+    padding: 18px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45);
+}
+
+.current-mission-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 680px;
+}
+
+.mission-pill-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.checkpoint-pill {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: rgba(0, 240, 255, 0.14);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    color: var(--cyan);
+}
+
+.time-pill {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-muted);
+}
+
+.current-mission-info h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.current-mission-info p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+
+.mission-nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.nav-ctrl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #F1F5F9;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+
+.nav-ctrl-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.nav-ctrl-btn:hover:not(:disabled) {
+    border-color: var(--sky);
+    color: var(--sky);
+}
+
+.nav-ctrl-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.nav-ctrl-btn.primary {
+    background: var(--sky);
+    border-color: var(--sky);
+    color: #060A16;
+}
+
+.nav-ctrl-btn.primary:hover:not(:disabled) {
+    background: #7DD3FC;
+    color: #060A16;
+    transform: translateY(-1px);
+}
+
+.nav-ctrl-btn.tour.active {
+    background: rgba(16, 185, 129, 0.18);
+    border-color: var(--emerald);
+    color: var(--emerald);
+}
+
+/* =========================================
+   3. مسرح الطريق المتعرج (Winding Road Stage)
+   ========================================= */
+.road-viewport {
+    width: 100%;
+    background: rgba(10, 16, 34, 0.78);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--panel-border);
+    border-radius: 28px;
+    padding: 16px 10px;
+    box-shadow: 0 24px 55px rgba(0, 0, 0, 0.55);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+}
+
+.road-canvas-stage {
+    position: relative;
+    width: 100%;
+    min-width: 1080px;
+    aspect-ratio: 1200 / 540;
+    user-select: none;
+}
+
+#roadmap-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.checkpoints-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* =========================================
+   4. الدبابيس وبطاقات المهام اليومية (Above & Below)
+   ========================================= */
+.checkpoint-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 15;
+}
+
+.pin-circle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: #0B1325;
+    border: 3px solid var(--pin-color);
+    box-shadow: 0 0 20px var(--pin-glow);
+    color: var(--pin-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s ease;
+}
+
+.pin-circle svg {
+    width: 20px;
+    height: 20px;
+}
+
+.checkpoint-node:hover .pin-circle,
+.checkpoint-node.active .pin-circle {
+    background: var(--pin-color);
+    color: #060A16;
+    transform: scale(1.14);
+}
+
+.checkpoint-node.pop-arrival .pin-circle {
+    animation: pinCelebratePop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pinCelebratePop {
+    0%   { transform: scale(1); }
+    45%  { transform: scale(1.3); }
+    75%  { transform: scale(0.95); }
+    100% { transform: scale(1.14); }
+}
+
+.mission-card-box {
+    position: absolute;
+    width: 222px;
+    background: rgba(13, 21, 42, 0.94);
+    border: 1.5px solid rgba(148, 163, 184, 0.22);
+    border-radius: 16px;
+    padding: 12px 14px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6);
+    opacity: 0.8;
+    transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+/* المحطات العلوية: البطاقة أعلى الدبوس بمسافة متزنة */
+.checkpoint-node.above .mission-card-box {
+    bottom: 56px;
+    transform: translateY(3px);
+}
+
+/* المحطات السفلية: البطاقة أسفل الدبوس بمسافة متزنة */
+.checkpoint-node.below .mission-card-box {
+    top: 56px;
+    transform: translateY(-3px);
+}
+
+.checkpoint-node:hover .mission-card-box,
+.checkpoint-node.active .mission-card-box {
+    opacity: 1;
+    transform: translateY(0);
+    border-color: var(--pin-color);
+}
+
+.card-meta-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.mission-num-tag {
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--pin-color);
+}
+
+.task-done-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #CBD5E1;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.task-done-btn:hover {
+    border-color: var(--emerald);
+    color: var(--emerald);
+}
+
+.task-done-btn.completed {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: var(--emerald);
+    color: var(--emerald);
+}
+
+.mission-card-box h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 4px;
+}
+
+.mission-card-box p {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    line-height: 1.42;
+}
+
+/* =========================================
+   5. شخصية رائد الفضاء اللطيف 'Nastro'
+   ========================================= */
+.nastro-mascot {
+    position: absolute;
+    left: 16.25%;
+    top: 54.4%;
+    width: 60px;
+    height: 72px;
+    transform: translate(-50%, -86%);
+    z-index: 25;
+    pointer-events: none;
+    will-change: left, top, transform;
+}
+
+.nastro-sprite {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: nastroFloatIdle 2.3s ease-in-out infinite;
+    filter: drop-shadow(0 8px 14px rgba(0, 240, 255, 0.35));
+}
+
+.nastro-sprite.arrival-hop {
+    animation: nastroHopCelebrate 0.62s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nastro-label {
+    font-size: 0.56rem;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+    background: #060A16;
+    color: var(--cyan);
+    border: 1px solid rgba(0, 240, 255, 0.45);
+    padding: 1px 6px;
+    border-radius: 999px;
+    margin-bottom: -2px;
+}
+
+@keyframes nastroFloatIdle {
+    0%, 100% { transform: translateY(0px); }
+    50%      { transform: translateY(-6px); }
+}
+
+@keyframes nastroHopCelebrate {
+    0%   { transform: translateY(0px) scale(1); }
+    42%  { transform: translateY(-18px) scale(1.08); }
+    76%  { transform: translateY(2px) scale(0.96); }
+    100% { transform: translateY(0px) scale(1); }
+}
+
+@media (max-width: 720px) {
+    .rm-topbar,
+    .rm-workspace {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
