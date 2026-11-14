@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     astronautCard.addEventListener('click', () => {
         astronautCard.classList.add('clicked');
         setTimeout(() => {
-            window.location.href = 'dashboard/dashboard.html'; 
+            window.location.href = '/remontada_project/dashboard/dashboard.html'; 
         }, 400);
     });
 });
