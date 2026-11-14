@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroHealth | Crew Vitals &amp; Radiation Sensors</title>
+    <link rel="stylesheet" href="sensors.css">
+    <!-- مكتبة الأيقونات -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- مكتبة Chart.js لعرض الترابط البصري بين النسب الخمس -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- الهيدر العلوي البسيط -->
+    <header class="sensors-topbar">
+        <div class="topbar-left">
+            <a href="/dashboard//dashboard.html" class="back-btn" title="Return to Dashboard">
+                <i data-lucide="arrow-left"></i>
+                <span>Dashboard</span>
+            </a>
+            <div>
+                <span class="eyebrow">BIOMETRIC &amp; RADIATION MONITOR</span>
+                <h1>Crew Sensors</h1>
+            </div>
+        </div>
+
+        <div class="live-badge" id="global-pill">
+            <span class="pulse-dot"></span>
+            <span id="global-status-text">ALL 5 VITALS IN HARMONY</span>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي المريح للعين -->
+    <main class="sensors-main">
+
+        <!-- 1. شريط الترابط الحيوي الموحد (Bio-Harmony Overview) -->
+        <section class="harmony-banner" id="harmony-banner">
+            <div class="harmony-score-group">
+                <div class="harmony-ring">
+                    <svg viewBox="0 0 80 80">
+                        <circle class="ring-bg" cx="40" cy="40" r="34"></circle>
+                        <circle class="ring-progress" id="harmony-ring-circle" cx="40" cy="40" r="34"></circle>
+                    </svg>
+                    <strong id="harmony-percent">96%</strong>
+                </div>
+                <div class="harmony-text">
+                    <span class="harmony-label">PHYSIOLOGICAL CORRELATION</span>
+                    <h2 id="harmony-headline">Balanced Energy &amp; Oxygen Flow</h2>
+                    <p id="harmony-insight">Steady blood sugar and full oxygen saturation keep your heart rate and pressure calm.</p>
+                </div>
+            </div>
+
+            <!-- أزرار محاكاة أوضاع رائد الفضاء لرؤية ارتباط النسب الخمس ببعضها -->
+            <div class="scenario-controls" aria-label="Mission State Selector">
+                <button class="state-btn active" data-state="resting">Resting Orbit</button>
+                <button class="state-btn" data-state="eva">Spacewalk (EVA)</button>
+                <button class="state-btn" data-state="lowSugar">Low Sugar</button>
+            </div>
+        </section>
+
+        <!-- 2. الكروت الخمسة الأساسية فقط (Heart Rate, Oxygen Rate, Pressure, Sugar, Radiation) -->
+        <section class="five-sensors-grid">
+
+            <!-- كارد 1: Heart Rate -->
+            <article class="vital-card" id="card-hr">
+                <div class="card-top">
+                    <div class="title-group">
+                        <div class="icon-badge cyan">
+                            <i data-lucide="heart-pulse"></i>
+                        </div>
+                        <h3>Heart Rate</h3>
+                    </div>
+
+                    <!-- أيقونة علامة التعجب (!) مع الشرح عند الوقوف بالسهم -->
+                    <div class="info-tooltip-wrap" tabindex="0" aria-label="Why we measure Heart Rate">
+                        <span class="exclamation-icon">!</span>
+                        <div class="tooltip-bubble">
+                            <strong>Why we measure Heart Rate:</strong>
+                            <p>In zero gravity, the heart works differently to pump blood without downward pull. Tracking BPM alerts you early to physical strain, stress, or low blood sugar.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-reading">
+                    <strong id="val-hr">72</strong>
+                    <span>BPM</span>
+                </div>
+
+                <div class="progress-wrap">
+                    <div class="progress-track">
+                        <div class="progress-fill cyan" id="bar-hr" style="width: 48%;"></div>
+                    </div>
+                    <span class="state-tag nominal" id="tag-hr">Optimal</span>
+                </div>
+            </article>
+
+            <!-- كارد 2: Oxygen Rate -->
+            <article class="vital-card" id="card-o2">
+                <div class="card-top">
+                    <div class="title-group">
+                        <div class="icon-badge sky">
+                            <i data-lucide="wind"></i>
+                        </div>
+                        <h3>Oxygen Rate</h3>
+                    </div>
+
+                    <div class="info-tooltip-wrap" tabindex="0" aria-label="Why we measure Oxygen Rate">
+                        <span class="exclamation-icon">!</span>
+                        <div class="tooltip-bubble">
+                            <strong>Why we measure Oxygen Rate:</strong>
+                            <p>Confirms your lungs and cabin/suit air supply are delivering enough oxygen to your brain and muscles, preventing hypoxia and dizziness.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-reading">
+                    <strong id="val-o2">99</strong>
+                    <span>% SpO₂</span>
+                </div>
+
+                <div class="progress-wrap">
+                    <div class="progress-track">
+                        <div class="progress-fill sky" id="bar-o2" style="width: 95%;"></div>
+                    </div>
+                    <span class="state-tag nominal" id="tag-o2">Optimal</span>
+                </div>
+            </article>
+
+            <!-- كارد 3: Pressure -->
+            <article class="vital-card" id="card-pressure">
+                <div class="card-top">
+                    <div class="title-group">
+                        <div class="icon-badge lavender">
+                            <i data-lucide="gauge"></i>
+                        </div>
+                        <h3>Pressure</h3>
+                    </div>
+
+                    <div class="info-tooltip-wrap" tabindex="0" aria-label="Why we measure Pressure">
+                        <span class="exclamation-icon">!</span>
+                        <div class="tooltip-bubble">
+                            <strong>Why we measure Pressure:</strong>
+                            <p>Microgravity shifts body fluids upward toward the chest and head. Monitoring blood pressure ensures stable circulation and prevents lightheadedness.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-reading">
+                    <strong id="val-pressure">118/76</strong>
+                    <span>mmHg</span>
+                </div>
+
+                <div class="progress-wrap">
+                    <div class="progress-track">
+                        <div class="progress-fill lavender" id="bar-pressure" style="width: 55%;"></div>
+                    </div>
+                    <span class="state-tag nominal" id="tag-pressure">Optimal</span>
+                </div>
+            </article>
+
+            <!-- كارد 4: Sugar -->
+            <article class="vital-card" id="card-sugar">
+                <div class="card-top">
+                    <div class="title-group">
+                        <div class="icon-badge emerald">
+                            <i data-lucide="droplet"></i>
+                        </div>
+                        <h3>Sugar</h3>
+                    </div>
+
+                    <div class="info-tooltip-wrap" tabindex="0" aria-label="Why we measure Sugar">
+                        <span class="exclamation-icon">!</span>
+                        <div class="tooltip-bubble">
+                            <strong>Why we measure Sugar:</strong>
+                            <p>Glucose is the primary fuel for your brain and muscles. If sugar drops during a mission, your heart rate rises and focus drops rapidly.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-reading">
+                    <strong id="val-sugar">95</strong>
+                    <span>mg/dL</span>
+                </div>
+
+                <div class="progress-wrap">
+                    <div class="progress-track">
+                        <div class="progress-fill emerald" id="bar-sugar" style="width: 58%;"></div>
+                    </div>
+                    <span class="state-tag nominal" id="tag-sugar">Optimal</span>
+                </div>
+            </article>
+
+            <!-- كارد 5: Radiation -->
+            <article class="vital-card" id="card-radiation">
+                <div class="card-top">
+                    <div class="title-group">
+                        <div class="icon-badge amber">
+                            <i data-lucide="radiation"></i>
+                        </div>
+                        <h3>Radiation</h3>
+                    </div>
+
+                    <div class="info-tooltip-wrap" tabindex="0" aria-label="Why we measure Radiation">
+                        <span class="exclamation-icon">!</span>
+                        <div class="tooltip-bubble">
+                            <strong>Why we measure Radiation:</strong>
+                            <p>Beyond Earth's atmosphere, cosmic and solar radiation are higher. Continuous tracking protects your cells and tells you when to move behind thicker shielding.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-reading">
+                    <strong id="val-radiation">0.14</strong>
+                    <span>mSv/day</span>
+                </div>
+
+                <div class="progress-wrap">
+                    <div class="progress-track">
+                        <div class="progress-fill amber" id="bar-radiation" style="width: 24%;"></div>
+                    </div>
+                    <span class="state-tag nominal" id="tag-radiation">Safe Shielding</span>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- 3. خريطة التوازن البصري للـ 5 نسب معاً (بدون أرقام مزدحمة) -->
+        <section class="correlation-visual-panel">
+            <div class="panel-heading">
+                <div>
+                    <span class="eyebrow">UNIFIED BALANCE MAP</span>
+                    <h3>How Your 5 Vitals Connect</h3>
+                </div>
+                <div class="legend-pills">
+                    <span><i class="dot-current"></i> Current Balance</span>
+                    <span><i class="dot-ideal"></i> Ideal Safe Zone</span>
+                </div>
+            </div>
+
+            <div class="radar-layout">
+                <div class="radar-canvas-box">
+                    <canvas id="vitalsRadarChart"></canvas>
+                </div>
+
+                <div class="connection-notes">
+                    <div class="conn-item">
+                        <span class="conn-badge">1</span>
+                        <p><strong>Energy → Heart Link:</strong> When <b>Sugar</b> drops, your body releases adrenaline, causing <b>Heart Rate</b> and <b>Pressure</b> to shift automatically.</p>
+                    </div>
+                    <div class="conn-item">
+                        <span class="conn-badge">2</span>
+                        <p><strong>Exertion → Oxygen Link:</strong> During physical tasks, muscles consume more fuel, raising <b>Heart Rate</b> to keep <b>Oxygen Rate</b> steady.</p>
+                    </div>
+                    <div class="conn-item">
+                        <span class="conn-badge">3</span>
+                        <p><strong>Environment → Shielding:</strong> Stepping outside cabin protection increases <b>Radiation</b> exposure alongside physical workload.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="sensors.js"></script>
+</body>
+</html>

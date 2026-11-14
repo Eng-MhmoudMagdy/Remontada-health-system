@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroHealth | Virtual Medical Clinic</title>
+    <link rel="stylesheet" href="css/clinic-base.css">
+    <link rel="stylesheet" href="css/clinic-station.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- خلفية نجوم هادئة -->
+    <canvas id="clinic-bg-stars"></canvas>
+
+    <!-- الشريط العلوي -->
+    <header class="clinic-topbar">
+        <div class="topbar-left">
+            <a href="/dashboard/dashboard.html" class="back-dash-btn" title="Return to Command Dashboard">
+                <i data-lucide="arrow-left"></i>
+                <span>Dashboard</span>
+            </a>
+            <div>
+                <span class="eyebrow">ORBITAL TELEMEDICINE BAY</span>
+                <h1>Virtual Medical Clinic</h1>
+            </div>
+        </div>
+
+        <div class="clinic-status-pill" id="topbar-clinic-pill">
+            <span class="status-dot"></span>
+            <span id="topbar-clinic-label">SELECT BODY REGION</span>
+        </div>
+    </header>
+
+    <!-- =========================================================
+         المشهد الانتقالي السينمائي بالمركبة الفضائية (Cinematic Spaceship Warp)
+         ========================================================= -->
+    <div class="cinema-overlay hidden" id="cinema-overlay" aria-hidden="true">
+        <canvas id="warp-starfield-canvas"></canvas>
+        <div class="cinema-hud">
+            <div class="spaceship-craft">
+                <svg viewBox="0 0 180 90" fill="none">
+                    <ellipse cx="26" cy="45" rx="22" ry="10" fill="url(#thrusterGlow)"/>
+                    <path d="M12 45 L42 37 L42 53 Z" fill="#38BDF8"/>
+                    <path d="M40 28 L122 28 L158 45 L122 62 L40 62 Z" fill="#0F172A" stroke="#38BDF8" stroke-width="2.5"/>
+                    <path d="M55 28 L38 10 L82 28 Z" fill="#1E293B" stroke="#38BDF8" stroke-width="2"/>
+                    <path d="M55 62 L38 80 L82 62 Z" fill="#1E293B" stroke="#38BDF8" stroke-width="2"/>
+                    <path d="M105 34 L138 45 L105 56 Z" fill="#38BDF8" fill-opacity="0.35" stroke="#7DD3FC" stroke-width="1.8"/>
+                    <rect x="74" y="38" width="5" height="14" rx="1.5" fill="#10B981"/>
+                    <rect x="69.5" y="42.5" width="14" height="5" rx="1.5" fill="#10B981"/>
+                    <defs>
+                        <radialGradient id="thrusterGlow" cx="0.5" cy="0.5" r="0.5">
+                            <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.95"/>
+                            <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
+                        </radialGradient>
+                    </defs>
+                </svg>
+            </div>
+            <span class="warp-eyebrow">ENGAGING MEDICAL SHUTTLE TRANSIT</span>
+            <h2 id="cinema-destination-title">Routing to Specialized Clinic...</h2>
+            <div class="warp-progress-track">
+                <div class="warp-progress-bar" id="warp-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الحاوية الرئيسية -->
+    <main class="clinic-workspace">
+
+        <!-- =========================================================
+             المرحلة 1: مجسم رائد الفضاء الواقعي 2D (Realistic 2D Astronaut Anatomy Map)
+             ========================================================= -->
+        <section class="stage-section active" id="stage-body-map">
+            <div class="stage-intro">
+                <span class="eyebrow">STEP 1 • ANATOMICAL TRIAGE</span>
+                <h2>Select Where You Feel Discomfort</h2>
+                <p>Tap any highlighted area on the astronaut suit or choose from the list to launch a specialized virtual clinic.</p>
+            </div>
+
+            <div class="astronaut-map-layout">
+
+                <!-- بطاقة مجسم رائد الفضاء الواقعي 2D -->
+                <div class="astronaut-figure-card">
+                    <div class="scanner-grid-bg"></div>
+                    <svg id="astronaut-anatomy-svg" viewBox="0 0 380 540" role="img" aria-label="Realistic 2D Astronaut Body Map">
+                        <defs>
+                            <!-- تدرجات إضاءة وظلال البدلة الفضائية البيضاء الواقعية -->
+                            <linearGradient id="emuFabricMain" x1="0.15" y1="0" x2="0.88" y2="1">
+                                <stop offset="0%" stop-color="#FFFFFF"/>
+                                <stop offset="42%" stop-color="#E2E8F0"/>
+                                <stop offset="78%" stop-color="#94A3B8"/>
+                                <stop offset="100%" stop-color="#64748B"/>
+                            </linearGradient>
+
+                            <linearGradient id="emuFabricShadow" x1="0" y1="0" x2="1" y2="0.4">
+                                <stop offset="0%" stop-color="#CBD5E1"/>
+                                <stop offset="55%" stop-color="#94A3B8"/>
+                                <stop offset="100%" stop-color="#475569"/>
+                            </linearGradient>
+
+                            <linearGradient id="plssPackGrad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#CBD5E1"/>
+                                <stop offset="65%" stop-color="#64748B"/>
+                                <stop offset="100%" stop-color="#334155"/>
+                            </linearGradient>
+
+                            <!-- تدرج الخوذة وزجاج الحماية الواقعي -->
+                            <radialGradient id="helmetShellGrad" cx="0.35" cy="0.28" r="0.72">
+                                <stop offset="0%" stop-color="#FFFFFF"/>
+                                <stop offset="55%" stop-color="#CBD5E1"/>
+                                <stop offset="88%" stop-color="#64748B"/>
+                                <stop offset="100%" stop-color="#334155"/>
+                            </radialGradient>
+
+                            <linearGradient id="realisticVisorGrad" x1="0.2" y1="0" x2="0.8" y2="1">
+                                <stop offset="0%" stop-color="#082F49"/>
+                                <stop offset="35%" stop-color="#0369A1"/>
+                                <stop offset="68%" stop-color="#0EA5E9" stop-opacity="0.78"/>
+                                <stop offset="92%" stop-color="#D97706" stop-opacity="0.65"/>
+                                <stop offset="100%" stop-color="#0F172A"/>
+                            </linearGradient>
+
+                            <!-- تدرج الحلقات المعدنية (Neck / Wrist / Waist Bearings) -->
+                            <linearGradient id="metallicRingGrad" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#475569"/>
+                                <stop offset="32%" stop-color="#E2E8F0"/>
+                                <stop offset="68%" stop-color="#64748B"/>
+                                <stop offset="100%" stop-color="#1E293B"/>
+                            </linearGradient>
+
+                            <!-- تدرج الأحذية الفضائية -->
+                            <linearGradient id="bootGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#CBD5E1"/>
+                                <stop offset="65%" stop-color="#64748B"/>
+                                <stop offset="100%" stop-color="#1E293B"/>
+                            </linearGradient>
+
+                            <filter id="suitDropShadow" x="-15%" y="-10%" width="130%" height="125%">
+                                <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#020617" flood-opacity="0.65"/>
+                            </filter>
+
+                            <filter id="hotspotGlow" x="-45%" y="-45%" width="190%" height="190%">
+                                <feGaussianBlur stdDeviation="4.5" result="blur"/>
+                                <feMerge>
+                                    <feMergeNode in="blur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <g filter="url(#suitDropShadow)">
+                            <!-- ظل الأرضية أسفل الأحذية -->
+                            <ellipse cx="190" cy="512" rx="92" ry="11" fill="rgba(2, 6, 23, 0.72)"/>
+
+                            <!-- 1. حقيبة دعم الحياة الخلفية (PLSS Life Support Backpack) -->
+                            <rect x="118" y="114" width="144" height="168" rx="22" fill="url(#plssPackGrad)" stroke="#475569" stroke-width="2"/>
+                            <rect x="128" y="124" width="124" height="148" rx="16" fill="none" stroke="#E2E8F0" stroke-opacity="0.35" stroke-width="1.2"/>
+                            <!-- هوائي الاتصالات العلوي -->
+                            <line x1="246" y1="114" x2="252" y2="62" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="252" cy="60" r="4" fill="#38BDF8"/>
+
+                            <!-- 2. الساقان والأحذية الفضائية الواقعية (Legs, Knee Pads & Lunar Boots) -->
+                            <!-- الساق اليسرى -->
+                            <path d="M144 286 C138 332, 134 374, 133 418 C132 442, 130 462, 128 476 L168 476 C170 452, 173 415, 176 376 C178 344, 181 312, 183 288 Z"
+                                  fill="url(#emuFabricMain)" stroke="#64748B" stroke-width="1.8"/>
+                            <!-- ثنيات القماش المضغوط ووسادة الركبة اليسرى -->
+                            <path d="M136 355 Q155 362 175 354 M135 366 Q155 373 175 365" stroke="#64748B" stroke-width="1.6" fill="none"/>
+                            <rect x="135" y="374" width="38" height="28" rx="10" fill="url(#emuFabricShadow)" stroke="#475569" stroke-width="1.5"/>
+                            <!-- الحذاء الأيسر -->
+                            <path d="M124 472 L171 472 L174 496 C174 503, 168 507, 158 507 L112 507 C104 507, 102 499, 108 491 L124 476 Z"
+                                  fill="url(#bootGrad)" stroke="#334155" stroke-width="1.8"/>
+                            <rect x="104" y="501" width="70" height="7" rx="3.5" fill="#0F172A"/>
+
+                            <!-- الساق اليمنى -->
+                            <path d="M236 286 C242 332, 246 374, 247 418 C248 442, 250 462, 252 476 L212 476 C210 452, 207 415, 204 376 C202 344, 199 312, 197 288 Z"
+                                  fill="url(#emuFabricMain)" stroke="#64748B" stroke-width="1.8"/>
+                            <!-- ثنيات القماش ووسادة الركبة اليمنى -->
+                            <path d="M205 354 Q225 362 244 355 M205 365 Q225 373 245 366" stroke="#64748B" stroke-width="1.6" fill="none"/>
+                            <rect x="207" y="374" width="38" height="28" rx="10" fill="url(#emuFabricShadow)" stroke="#475569" stroke-width="1.5"/>
+                            <!-- الحذاء الأيمن -->
+                            <path d="M209 472 L256 472 L272 491 C278 499, 276 507, 268 507 L222 507 C212 507, 206 503, 206 496 Z"
+                                  fill="url(#bootGrad)" stroke="#334155" stroke-width="1.8"/>
+                            <rect x="206" y="501" width="70" height="7" rx="3.5" fill="#0F172A"/>
+
+                            <!-- 3. الذراعان والقفازات المفصلية (Arms, Ribbed Elbows & EVA Gloves) -->
+                            <!-- الذراع اليسرى -->
+                            <path d="M126 146 C104 156, 88 182, 82 214 C77 240, 76 264, 78 282 L106 282 C108 260, 111 236, 117 216 C122 198, 128 184, 134 174 Z"
+                                  fill="url(#emuFabricMain)" stroke="#64748B" stroke-width="1.8"/>
+                            <!-- مفاصل الكوع اليسرى -->
+                            <path d="M84 206 Q99 212 115 208 M82 216 Q98 222 114 218" stroke="#64748B" stroke-width="1.6" fill="none"/>
+                            <!-- حلقة المعصم والقفاز الأيسر -->
+                            <rect x="76" y="278" width="32" height="9" rx="4.5" fill="url(#metallicRingGrad)"/>
+                            <path d="M77 287 L107 287 L110 308 C110 317, 102 323, 92 323 C82 323, 75 316, 75 307 Z"
+                                  fill="#334155" stroke="#1E293B" stroke-width="1.6"/>
+                            <path d="M84 306 L84 321 M91 307 L91 322 M98 306 L98 321" stroke="#64748B" stroke-width="1.3" stroke-linecap="round"/>
+
+                            <!-- الذراع اليمنى -->
+                            <path d="M254 146 C276 156, 292 182, 298 214 C303 240, 304 264, 302 282 L274 282 C272 260, 269 236, 263 216 C258 198, 252 184, 246 174 Z"
+                                  fill="url(#emuFabricMain)" stroke="#64748B" stroke-width="1.8"/>
+                            <!-- مفاصل الكوع اليمنى -->
+                            <path d="M265 208 Q281 212 296 206 M266 218 Q282 222 298 216" stroke="#64748B" stroke-width="1.6" fill="none"/>
+                            <!-- شارة العلم/المهمة على الكتف الأيمن -->
+                            <rect x="266" y="168" width="18" height="12" rx="2.5" fill="#0284C7" stroke="#E2E8F0" stroke-width="1"/>
+                            <!-- حلقة المعصم والقفاز الأيمن -->
+                            <rect x="272" y="278" width="32" height="9" rx="4.5" fill="url(#metallicRingGrad)"/>
+                            <path d="M273 287 L303 287 L305 307 C305 316, 298 323, 288 323 C278 323, 270 317, 270 308 Z"
+                                  fill="#334155" stroke="#1E293B" stroke-width="1.6"/>
+                            <path d="M282 306 L282 321 M289 307 L289 322 M296 306 L296 321" stroke="#64748B" stroke-width="1.3" stroke-linecap="round"/>
+
+                            <!-- 4. الجذع العلوي والخصر المضغوط (Hard Upper Torso & Waist Assembly) -->
+                            <path d="M132 138 C152 130, 228 130, 248 138 L254 228 C254 252, 246 276, 240 292 L140 292 C134 276, 126 252, 126 228 Z"
+                                  fill="url(#emuFabricMain)" stroke="#64748B" stroke-width="2"/>
+
+                            <!-- خطوط التدرج والدرزات التشريحية على البدلة -->
+                            <path d="M142 142 L152 224 M238 142 L228 224" stroke="#94A3B8" stroke-width="1.5" fill="none"/>
+                            <path d="M136 248 Q190 256 244 248" stroke="#94A3B8" stroke-width="1.4" fill="none"/>
+
+                            <!-- وحدة التحكم والتحكم الحيوي على الصدر (Display & Control Module - DCM) -->
+                            <rect x="155" y="156" width="70" height="54" rx="10" fill="#F1F5F9" stroke="#64748B" stroke-width="1.8"/>
+                            <rect x="162" y="163" width="56" height="22" rx="4" fill="#0F172A"/>
+                            <circle cx="171" cy="174" r="3" fill="#10B981"/>
+                            <circle cx="181" cy="174" r="3" fill="#38BDF8"/>
+                            <rect x="190" y="171" width="22" height="6" rx="2" fill="#1E293B"/>
+                            <!-- أزرار وصمامات وحدة الصدر -->
+                            <rect x="163" y="191" width="14" height="11" rx="2.5" fill="#0284C7"/>
+                            <rect x="182" y="191" width="16" height="11" rx="2.5" fill="#94A3B8"/>
+                            <circle cx="209" cy="196.5" r="5.5" fill="#DC2626" stroke="#7F1D1D" stroke-width="1.2"/>
+
+                            <!-- شارة AstroHealth الدائرية على الصدر الأيمن -->
+                            <circle cx="234" cy="166" r="10" fill="#0F172A" stroke="#38BDF8" stroke-width="1.4"/>
+                            <path d="M229 167 L234 161 L239 167" stroke="#38BDF8" stroke-width="1.5" fill="none"/>
+
+                            <!-- حزام الخصر المعدني وحلقات التثبيت (Waist Bearing & Harness) -->
+                            <rect x="136" y="274" width="108" height="14" rx="7" fill="url(#metallicRingGrad)" stroke="#475569" stroke-width="1.5"/>
+                            <rect x="181" y="272" width="18" height="18" rx="4" fill="#334155" stroke="#94A3B8" stroke-width="1.4"/>
+
+                            <!-- 5. طوق الرقبة المعدني والخوذة الفضائية الواقعية (Neck Ring & Bubble Helmet) -->
+                            <ellipse cx="190" cy="133" rx="44" ry="10" fill="url(#metallicRingGrad)" stroke="#475569" stroke-width="1.8"/>
+
+                            <!-- الهيكل الخارجي للخوذة -->
+                            <circle cx="190" cy="76" r="53" fill="url(#helmetShellGrad)" stroke="#475569" stroke-width="2.2"/>
+
+                            <!-- وحدات السماعات والاتصال الجانبية على الخوذة (Comms Ear Cups) -->
+                            <rect x="131" y="64" width="9" height="26" rx="4.5" fill="#475569" stroke="#1E293B" stroke-width="1.4"/>
+                            <rect x="240" y="64" width="9" height="26" rx="4.5" fill="#475569" stroke="#1E293B" stroke-width="1.4"/>
+
+                            <!-- زجاج الخوذة العاكس الواقعي (Reflective Space Visor) -->
+                            <path d="M146 66 C146 42, 234 42, 234 66 C234 94, 218 110, 190 110 C162 110, 146 94, 146 66 Z"
+                                  fill="url(#realisticVisorGrad)" stroke="#334155" stroke-width="2.2"/>
+
+                            <!-- انعكاس الضوء الواقعي على زجاج الخوذة -->
+                            <path d="M158 55 Q186 44 214 55" stroke="#FFFFFF" stroke-opacity="0.72" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+                            <path d="M155 68 Q162 84 174 94" stroke="#7DD3FC" stroke-opacity="0.45" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        </g>
+
+                        <!-- =====================================================
+                             نقاط التفاعل التشريحية الست على جسم رائد الفضاء (Clickable Hotspots)
+                             ===================================================== -->
+                        <!-- 1. Head -->
+                        <g class="body-hotspot" data-part="head" tabindex="0" role="button" aria-label="Select Head - Neurology Clinic">
+                            <circle class="pulse-ring" cx="190" cy="34" r="17"/>
+                            <circle class="core-dot" cx="190" cy="34" r="8.5"/>
+                        </g>
+
+                        <!-- 2. Eyes -->
+                        <g class="body-hotspot" data-part="eyes" tabindex="0" role="button" aria-label="Select Eyes - Ophthalmology Clinic">
+                            <circle class="pulse-ring" cx="190" cy="72" r="17"/>
+                            <circle class="core-dot" cx="190" cy="72" r="8.5"/>
+                        </g>
+
+                        <!-- 3. Ears -->
+                        <g class="body-hotspot" data-part="ears" tabindex="0" role="button" aria-label="Select Ears - ENT Clinic">
+                            <circle class="pulse-ring" cx="135" cy="77" r="16"/>
+                            <circle class="core-dot" cx="135" cy="77" r="8"/>
+                        </g>
+
+                        <!-- 4. Chest -->
+                        <g class="body-hotspot" data-part="chest" tabindex="0" role="button" aria-label="Select Chest - Cardiology Clinic">
+                            <circle class="pulse-ring" cx="190" cy="183" r="19"/>
+                            <circle class="core-dot" cx="190" cy="183" r="9.5"/>
+                        </g>
+
+                        <!-- 5. Stomach -->
+                        <g class="body-hotspot" data-part="stomach" tabindex="0" role="button" aria-label="Select Stomach - Gastroenterology Clinic">
+                            <circle class="pulse-ring" cx="190" cy="246" r="18"/>
+                            <circle class="core-dot" cx="190" cy="246" r="9"/>
+                        </g>
+
+                        <!-- 6. Muscles (Arms & Legs) -->
+                        <g class="body-hotspot" data-part="muscles" tabindex="0" role="button" aria-label="Select Muscles - Musculoskeletal Clinic">
+                            <circle class="pulse-ring" cx="96" cy="212" r="16"/>
+                            <circle class="core-dot" cx="96" cy="212" r="8"/>
+                            <circle class="pulse-ring" cx="226" cy="374" r="16"/>
+                            <circle class="core-dot" cx="226" cy="374" r="8"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- قائمة الاختيار السريع المنظمة بجانب رائد الفضاء -->
+                <div class="parts-selector-panel" id="parts-selector-list">
+                    <!-- يتم توليد البطاقات الست تلقائياً من clinic-data.js -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =========================================================
+             المرحلة 2: العيادة المتخصصة والاستبيان الطبي الذكي (Specialized Clinic & Survey)
+             ========================================================= -->
+        <section class="stage-section hidden" id="stage-clinic-survey">
+
+            <!-- بطاقة الطبيب الافتراضي والعيادة المتخصصة -->
+            <div class="doctor-intro-card">
+                <div class="doctor-avatar-box">
+                    <i data-lucide="bot"></i>
+                    <span class="online-indicator"></span>
+                </div>
+                <div class="doctor-speech">
+                    <div class="clinic-title-row">
+                        <h2 id="clinic-name-heading">Neurology Clinic</h2>
+                        <span class="part-badge" id="selected-part-badge">HEAD</span>
+                    </div>
+                    <p id="doctor-intro-text">Hello Commander, I'm Dr. Nova. I'll ask you a few quick questions to better understand your symptoms.</p>
+                </div>
+            </div>
+
+            <!-- بطاقة السؤال الواحد التفاعلي -->
+            <div class="survey-question-card">
+                <div class="survey-progress-header">
+                    <span id="question-counter-text">Question 1 of 4</span>
+                    <div class="survey-progress-track">
+                        <div class="survey-progress-fill" id="survey-progress-fill" style="width: 25%;"></div>
+                    </div>
+                </div>
+
+                <h3 class="question-prompt" id="question-prompt-text">What best describes your head discomfort?</h3>
+
+                <div class="options-stack" id="question-options-container">
+                    <!-- يتم توليد الاختيارات هنا -->
+                </div>
+
+                <div class="survey-nav-footer">
+                    <button type="button" class="btn-ghost" id="survey-back-btn">
+                        <i data-lucide="arrow-left"></i>
+                        <span id="survey-back-label">Change Body Part</span>
+                    </button>
+                    <span class="sim-tag">Conversational Triage</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             المرحلة 3: مراجعة الطبيب الافتراضي في الخلفية (Brief Review Animation)
+             ========================================================= -->
+        <section class="stage-section hidden" id="stage-analyzing">
+            <div class="analyzing-card">
+                <div class="scanner-orbit">
+                    <div class="orbit-ring"></div>
+                    <i data-lucide="stethoscope"></i>
+                </div>
+                <h2 id="analyzing-doctor-text">Dr. Nova is reviewing your responses...</h2>
+                <p>Preparing a clear, personalized health summary for your mission log.</p>
+                <span class="sim-disclaimer-pill">Simulated Clinical Triage</span>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             المرحلة 4: التقرير النهائي المبسط (3 بطاقات واضحة فقط)
+             ========================================================= -->
+        <section class="stage-section hidden" id="stage-assessment">
+            <div class="assessment-header">
+                <div>
+                    <span class="eyebrow" id="report-clinic-eyebrow">NEUROLOGY CLINIC ASSESSMENT</span>
+                    <h2>Your Virtual Clinic Summary</h2>
+                </div>
+                <span class="sim-disclaimer-pill">Simulation Guidance Only</span>
+            </div>
+
+            <!-- البطاقات الثلاث الرئيسية فقط -->
+            <div class="three-report-cards">
+
+                <!-- A. What might be happening? -->
+                <article class="report-card">
+                    <div class="report-card-icon sky">
+                        <i data-lucide="help-circle"></i>
+                    </div>
+                    <h3>What might be happening?</h3>
+                    <p id="report-happening-text">Mild tension or fluid-shift pressure common during orbital adaptation.</p>
+                </article>
+
+                <!-- B. What should you do? -->
+                <article class="report-card">
+                    <div class="report-card-icon cyan">
+                        <i data-lucide="clipboard-check"></i>
+                    </div>
+                    <h3>What should you do?</h3>
+                    <ul class="action-steps-list" id="report-actions-list">
+                        <!-- يتم تعبئتها بخطوات عملية قصيرة -->
+                    </ul>
+                </article>
+
+                <!-- C. Should you be concerned? -->
+                <article class="report-card concern-card" id="report-concern-card">
+                    <div class="report-card-icon" id="report-concern-icon">
+                        <i data-lucide="shield-check"></i>
+                    </div>
+                    <h3>Should you be concerned?</h3>
+                    <div class="concern-status-pill low" id="report-concern-badge">Low concern</div>
+                    <p id="report-concern-text">Your answers suggest mild symptoms that can be monitored calmly.</p>
+                </article>
+
+            </div>
+
+            <!-- أزرار المتابعة -->
+            <div class="assessment-footer-actions">
+                <button type="button" class="btn-outline" id="check-another-part-btn">
+                    <i data-lucide="user-check"></i>
+                    <span>Check Another Body Part</span>
+                </button>
+                <a href="../sensors/sensors.html" class="btn-primary">
+                    <i data-lucide="activity"></i>
+                    <span>Check Medical Sensors</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/clinic-data.js"></script>
+    <script src="js/clinic-cinema.js"></script>
+    <script src="js/clinic-app.js"></script>
+</body>
+</html>

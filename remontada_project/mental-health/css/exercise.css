@@ -1,0 +1,384 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+    --bg-deep-navy: #0B1021;
+    --lavender: #B8A9F8;
+    --muted-blue: #7AA2F7;
+    --soft-sage: #86EFAC;
+    --text-primary: #F1F5F9;
+    --text-secondary: #A5B4CF;
+}
+
+body {
+    background-color: var(--bg-deep-navy);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.ambient-sky {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(160deg, #090D1C 0%, #121A38 50%, #0B1021 100%);
+}
+
+.nebula-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+    opacity: 0.35;
+}
+
+.nebula-1 { width: 500px; height: 500px; background: #3B3678; top: -100px; right: -80px; }
+.nebula-2 { width: 460px; height: 460px; background: #1E3A6E; bottom: -100px; left: -60px; }
+
+.exercise-header {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px;
+    border-bottom: 1px solid rgba(184, 169, 248, 0.12);
+    background: rgba(11, 16, 33, 0.75);
+    backdrop-filter: blur(14px);
+}
+
+.back-wellness-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(184, 169, 248, 0.1);
+    border: 1px solid rgba(184, 169, 248, 0.3);
+    color: var(--lavender);
+    padding: 9px 16px;
+    border-radius: 14px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.back-wellness-btn svg {
+    width: 17px;
+    height: 17px;
+}
+
+.back-wellness-btn:hover {
+    background: var(--lavender);
+    color: #0B1021;
+}
+
+.session-badge {
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--muted-blue);
+    background: rgba(122, 162, 247, 0.12);
+    padding: 6px 14px;
+    border-radius: 16px;
+}
+
+.exercise-stage {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 28px 20px 44px;
+}
+
+.session-card {
+    width: 100%;
+    max-width: 720px;
+    background: rgba(21, 29, 56, 0.78);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(184, 169, 248, 0.22);
+    border-radius: 28px;
+    padding: 34px 36px;
+    box-shadow: 0 24px 60px rgba(4, 7, 18, 0.65);
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+}
+
+.session-intro {
+    text-align: center;
+}
+
+.duration-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--lavender);
+    background: rgba(184, 169, 248, 0.14);
+    padding: 5px 14px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+}
+
+.duration-pill svg {
+    width: 14px;
+    height: 14px;
+}
+
+.session-intro h1 {
+    font-size: 1.95rem;
+    color: #FFFFFF;
+    margin-bottom: 8px;
+}
+
+.session-intro p {
+    font-size: 0.96rem;
+    color: var(--text-secondary);
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* =========================================
+   مؤشر التنفس والتركيز البصري (Visual Orb)
+   ========================================= */
+.visual-focus-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+}
+
+.breathing-orb-wrapper {
+    position: relative;
+    width: 210px;
+    height: 210px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.orb-halo {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184, 169, 248, 0.28), transparent 70%);
+    transition: transform 4s ease-in-out;
+}
+
+.orb-core {
+    width: 146px;
+    height: 146px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, rgba(184, 169, 248, 0.25), rgba(122, 162, 247, 0.22));
+    border: 2px solid rgba(184, 169, 248, 0.55);
+    box-shadow: 0 0 35px rgba(184, 169, 248, 0.25), inset 0 0 24px rgba(184, 169, 248, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    transition: transform 4s ease-in-out, border-color 0.6s ease;
+}
+
+/* حالات توسع وانقباض دائرة التنفس */
+.breathing-orb-wrapper.inhale .orb-core,
+.breathing-orb-wrapper.inhale .orb-halo {
+    transform: scale(1.26);
+}
+
+.breathing-orb-wrapper.hold .orb-core,
+.breathing-orb-wrapper.hold .orb-halo {
+    transform: scale(1.26);
+    border-color: var(--soft-sage);
+}
+
+.breathing-orb-wrapper.exhale .orb-core,
+.breathing-orb-wrapper.exhale .orb-halo {
+    transform: scale(0.95);
+}
+
+.orb-cue {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--lavender);
+}
+
+.orb-timer {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    font-variant-numeric: tabular-nums;
+}
+
+/* شريط التقدم */
+.progress-wrapper {
+    width: 100%;
+    max-width: 480px;
+}
+
+.progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(11, 16, 33, 0.75);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--muted-blue), var(--lavender));
+    border-radius: 8px;
+    transition: width 0.4s ease;
+}
+
+/* =========================================
+   التعليمات خطوة بخطوة
+   ========================================= */
+.steps-container {
+    background: rgba(11, 16, 33, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 18px;
+    padding: 20px 24px;
+}
+
+.steps-container h3 {
+    font-size: 0.88rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted-blue);
+    margin-bottom: 12px;
+}
+
+.steps-list {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.steps-list li {
+    font-size: 0.92rem;
+    color: #CBD5E1;
+    line-height: 1.5;
+    padding: 6px 10px;
+    border-radius: 10px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.steps-list li.active-step {
+    background: rgba(184, 169, 248, 0.14);
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+/* =========================================
+   أزرار التحكم (Start / Pause / Resume / Finish)
+   ========================================= */
+.controls-bar {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+.ctrl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 26px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s ease;
+}
+
+.ctrl-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.ctrl-btn.primary {
+    background: var(--lavender);
+    color: #0B1021;
+}
+
+.ctrl-btn.primary:hover {
+    background: #C9BEFF;
+    transform: translateY(-2px);
+}
+
+.ctrl-btn.secondary {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #FFFFFF;
+}
+
+.ctrl-btn.finish {
+    background: rgba(134, 239, 172, 0.2);
+    border: 1px solid rgba(134, 239, 172, 0.5);
+    color: var(--soft-sage);
+}
+
+.ctrl-btn.finish:hover {
+    background: var(--soft-sage);
+    color: #0B1021;
+}
+
+/* بطاقة الإتمام */
+.completion-card {
+    text-align: center;
+    background: rgba(134, 239, 172, 0.08);
+    border: 1px solid rgba(134, 239, 172, 0.35);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.completion-card svg {
+    width: 34px;
+    height: 34px;
+    color: var(--soft-sage);
+}
+
+.completion-card p {
+    font-size: 0.92rem;
+    color: #E2E8F0;
+    margin-bottom: 8px;
+}
+
+.completion-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
