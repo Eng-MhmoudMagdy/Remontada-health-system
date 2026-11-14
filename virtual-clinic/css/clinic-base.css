@@ -1,0 +1,316 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+    --bg-space: #060A16;
+    --panel-bg: rgba(14, 22, 44, 0.82);
+    --panel-border: rgba(148, 163, 184, 0.16);
+    --cyan: #00F0FF;
+    --sky: #38BDF8;
+    --emerald: #10B981;
+    --amber: #F59E0B;
+    --crimson: #F43F5E;
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+}
+
+body {
+    background: radial-gradient(circle at 22% 12%, #0E1B3D 0%, #060A16 68%);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#clinic-bg-stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* =========================================
+   1. الهيدر العلوي
+   ========================================= */
+.clinic-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: rgba(6, 10, 22, 0.86);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--panel-border);
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.back-dash-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: var(--sky);
+    padding: 9px 15px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.25s ease;
+}
+
+.back-dash-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.back-dash-btn:hover {
+    background: var(--sky);
+    color: #060A16;
+}
+
+.eyebrow {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--sky);
+    margin-bottom: 2px;
+}
+
+.clinic-topbar h1 {
+    font-size: 1.24rem;
+    font-weight: 700;
+}
+
+.clinic-status-pill {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid var(--panel-border);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    color: var(--sky);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--emerald);
+    box-shadow: 0 0 10px var(--emerald);
+}
+
+/* =========================================
+   2. الحاوية الرئيسية ومجسم رائد الفضاء
+   ========================================= */
+.clinic-workspace {
+    position: relative;
+    z-index: 10;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 28px 40px 52px;
+}
+
+.stage-section {
+    animation: fadeSlideUp 0.4s ease;
+}
+
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.stage-intro {
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto 28px;
+}
+
+.stage-intro h2 {
+    font-size: 1.55rem;
+    font-weight: 700;
+    margin: 4px 0 8px;
+}
+
+.stage-intro p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.astronaut-map-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 32px;
+    align-items: center;
+}
+
+/* بطاقة مجسم رائد الفضاء */
+.astronaut-figure-card {
+    position: relative;
+    background: var(--panel-bg);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 28px;
+    padding: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 22px 52px rgba(0, 0, 0, 0.55);
+    overflow: hidden;
+}
+
+.scanner-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+    background-size: 26px 26px;
+    pointer-events: none;
+}
+
+#astronaut-anatomy-svg {
+    width: 100%;
+    max-width: 310px;
+    height: auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* نقاط التفاعل على جسم رائد الفضاء */
+.body-hotspot {
+    cursor: pointer;
+    outline: none;
+}
+
+.body-hotspot .pulse-ring {
+    fill: rgba(0, 240, 255, 0.16);
+    stroke: rgba(0, 240, 255, 0.55);
+    stroke-width: 1.5;
+    transition: all 0.25s ease;
+}
+
+.body-hotspot .core-dot {
+    fill: #00F0FF;
+    stroke: #060A16;
+    stroke-width: 2.5;
+    filter: url(#hotspotGlow);
+    transition: all 0.25s ease;
+}
+
+.body-hotspot:hover .pulse-ring,
+.body-hotspot.active .pulse-ring {
+    fill: rgba(16, 185, 129, 0.28);
+    stroke: #10B981;
+    transform-origin: center;
+}
+
+.body-hotspot:hover .core-dot,
+.body-hotspot.active .core-dot {
+    fill: #10B981;
+}
+
+/* بطاقات اختيار الأجزاء بجانب رائد الفضاء */
+.parts-selector-panel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.part-choice-card {
+    background: var(--panel-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--panel-border);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    text-align: left;
+    color: var(--text-main);
+    transition: all 0.25s ease;
+}
+
+.part-choice-card:hover,
+.part-choice-card.highlighted {
+    transform: translateY(-4px);
+    border-color: var(--cyan);
+    background: rgba(19, 31, 61, 0.92);
+    box-shadow: 0 16px 36px rgba(0, 240, 255, 0.14);
+}
+
+.part-icon-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+    background: rgba(56, 189, 248, 0.14);
+    color: var(--sky);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+}
+
+.part-choice-card:hover .part-icon-circle,
+.part-choice-card.highlighted .part-icon-circle {
+    background: var(--cyan);
+    color: #060A16;
+}
+
+.part-icon-circle svg {
+    width: 22px;
+    height: 22px;
+}
+
+.part-text-info strong {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.part-text-info span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+@media (max-width: 980px) {
+    .astronaut-map-layout {
+        grid-template-columns: 1fr;
+    }
+    .parts-selector-panel {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 680px) {
+    .clinic-topbar,
+    .clinic-workspace {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
